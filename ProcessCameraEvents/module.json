@@ -1,0 +1,12 @@
+{
+    "id": "{FC22025D-924B-A224-6DCE-276EE3D1094A}",
+    "name": "ProcessCameraEvents",
+    "type": 4,
+    "vendor": "",
+    "aliases": [],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "HIK",
+    "url": ""
+}
