@@ -46,6 +46,7 @@ class ProcessCameraEvents extends IPSModule {
     }
 
     public function ProcessEvent() {
+        IPS_LogMessage("HIK","Process Starts");
         $eggTimerModuleId = $this->ReadPropertyString('EggTimerModuleId');
         if (!IPS_GetModule($eggTimerModuleId)) {
             echo "Bitte erst das Egg Timer Modul aus dem Modul Store installieren";
