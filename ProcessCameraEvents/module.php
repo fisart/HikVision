@@ -1,6 +1,6 @@
 <?php
 
-class HikvisionEventProcessor extends IPSModule {
+class ProcessCameraEvents extends IPSModule {
     
     public function Create() {
         parent::Create();
