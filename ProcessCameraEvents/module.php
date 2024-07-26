@@ -45,7 +45,7 @@ class ProcessCameraEvents extends IPSModule {
         }
     }
 
-    public function ProcessEvent() {
+    public function  ProcessHookData() {
         IPS_LogMessage("HIK","Process Starts");
         $eggTimerModuleId = $this->ReadPropertyString('EggTimerModuleId');
         if (!IPS_GetModule($eggTimerModuleId)) {
