@@ -19,7 +19,7 @@ class ProcessCameraEvents extends IPSModule {
         parent::ApplyChanges();
         
         // Ensure the webhook is registered
-        $this->RegisterHook($this->ReadPropertyString('WebhookName'));
+        //$this->RegisterHook($this->ReadPropertyString('WebhookName'));
     }
 
     private function RegisterHook($WebHook)
