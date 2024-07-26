@@ -125,27 +125,55 @@ class ProcessCameraEvents extends IPSModule {
         return $array;
     }
 
-    private function manageVariable($parent, $name, $type, $profile, $logging, $aggregationType, $initialValue) {
-        $archiveId = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
-        $varId = @IPS_GetVariableIDByName($name, $parent);
-
+    private function manageVariable($name, $type, $profile, $position, $initialValue, $archive = true, $aggregationType = 0) {
+        // Check if variable already exists
+        $varId = @$this->GetIDForIdent($name);
+    
         if ($varId === false) {
-            $varId = IPS_CreateVariable($type);
-            if ($profile != "") IPS_SetVariableCustomProfile($varId, $profile);
-            IPS_SetName($varId, $name);
-            IPS_SetParent($varId, $parent);
+            // Register the variable if it does not exist
+            $this->RegisterVariable($name, $name, $type, $profile, $position);
             
-            AC_SetLoggingStatus($archiveId, $varId, $logging);
-            if ($logging || $type != 3) {
-                AC_SetAggregationType($archiveId, $varId, $aggregationType);
+            // Set initial value
+            switch ($type) {
+                case VARIABLETYPE_BOOLEAN:
+                    SetValueBoolean($varId, (bool)$initialValue);
+                    break;
+                case VARIABLETYPE_INTEGER:
+                    SetValueInteger($varId, (int)$initialValue);
+                    break;
+                case VARIABLETYPE_FLOAT:
+                    SetValueFloat($varId, (float)$initialValue);
+                    break;
+                case VARIABLETYPE_STRING:
+                    SetValueString($varId, (string)$initialValue);
+                    break;
             }
-            IPS_ApplyChanges($archiveId);
-            if ($initialValue != "") {
-                SetValueString($varId, $initialValue);
+    
+            // Set logging if required
+            if ($archive && IPS_ModuleExists("{43192F0B-135B-4CE7-A0A7-1475603F3060}")) {
+                $archiveId = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
+                AC_SetLoggingStatus($archiveId, $varId, true);
+                AC_SetAggregationType($archiveId, $varId, $aggregationType);
+                IPS_ApplyChanges($archiveId);
             }
         }
-
+    
         return $varId;
+    }
+    
+    private function RegisterVariable($ident, $name, $type, $profile, $position) {
+        // MaintainVariable helps to register or update a variable
+        $this->MaintainVariable($ident, $name, $type, $profile, $position, true);
+    }
+    
+    // Example usage of the manageVariable function
+    public function Create() {
+        parent::Create();
+    
+        // Register variables with initial values and logging settings
+        $this->manageVariable('Motion', VARIABLETYPE_BOOLEAN, '~Switch', 0, false);
+        $this->manageVariable('CameraName', VARIABLETYPE_STRING, '', 1, '');
+        $this->manageVariable('DateTime', VARIABLETYPE_STRING, '', 2, '');
     }
 
     private function manageMedia($parent, $name, $imageFile) {
