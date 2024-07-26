@@ -54,11 +54,13 @@ class ProcessCameraEvents extends IPSModule {
 
         $webhookData = file_get_contents("php://input", true);
         if ($webhookData !== "") {
+            IPS_LogMessage("HIK","php input");
             $motionData = $this->parseEventNotificationAlert($webhookData);
             if (is_array($motionData)) {
                 $this->handleMotionData($motionData);
             }
         } elseif (is_array($_POST)) {
+            IPS_LogMessage("HIK","Post");
             foreach ($_POST as $value) {
                 $motionData = $this->parseEventNotificationAlert($value);
                 $this->handleMotionData($motionData);
