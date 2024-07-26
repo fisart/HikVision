@@ -11,12 +11,7 @@ class ProcessCameraEvents extends IPSModule {
         $this->RegisterPropertyString('SavePath', 'webfront/user/');
         $this->RegisterPropertyString('EggTimerModuleId', '{17843F0A-BFC8-A4BA-E219-A2D10FC8E5BE}');
         
-        // Register variable profiles if needed
-        if (!IPS_VariableProfileExists('Motion')) {
-            IPS_CreateVariableProfile('Motion', 0);
-        }
-        
-        // Register webhook
+        // Ensure the webhook is registered
         $this->RegisterHook($this->ReadPropertyString('WebhookName'));
     }
 
@@ -28,32 +23,24 @@ class ProcessCameraEvents extends IPSModule {
     }
 
     private function RegisterHook($hook) {
-        $webhookId = @IPS_GetObjectIDByIdent('Webhook', $this->InstanceID);
-        if ($webhookId === false) {
-            $webhookId = IPS_CreateScript(0);
-            IPS_SetParent($webhookId, $this->InstanceID);
-            IPS_SetIdent($webhookId, 'Webhook');
-            IPS_SetName($webhookId, 'Webhook');
-        }
+        $instanceID = IPS_GetInstanceListByModuleID('{015A6EB8-D6E5-4B93-B496-0D3F77AE9FE1}')[0];
+        $configArray = json_decode(IPS_GetConfiguration($instanceID), true);
+        $hooks = json_decode($configArray['Hooks'], true);
 
-        $hooks = json_decode(IPS_GetProperty($webhookId, 'Hooks'), true);
-        if (!is_array($hooks)) {
-            $hooks = [];
-        }
-        
-        $found = false;
         foreach ($hooks as $hookInfo) {
-            if ($hookInfo['Hook'] === $hook) {
-                $found = true;
-                break;
+            if ($hookInfo['Hook'] == $hook) {
+                echo "Webhook already exists.";
+                return;
             }
         }
-        
-        if (!$found) {
-            $hooks[] = ['Hook' => $hook, 'TargetID' => $webhookId];
-            IPS_SetProperty($webhookId, 'Hooks', json_encode($hooks));
-            IPS_ApplyChanges($webhookId);
-        }
+
+        $scriptID = $this->InstanceID;
+        $hooks[] = ["Hook" => $hook, "TargetID" => $scriptID];
+        $configArray['Hooks'] = json_encode($hooks);
+
+        IPS_SetConfiguration($instanceID, json_encode($configArray));
+        IPS_ApplyChanges($instanceID);
+        echo "Webhook created successfully.";
     }
 
     public function ProcessEvent() {
@@ -70,7 +57,7 @@ class ProcessCameraEvents extends IPSModule {
                 $this->handleMotionData($motionData);
             }
         } elseif (is_array($_POST)) {
-            foreach ($_POST as $key => $value) {
+            foreach ($_POST as $value) {
                 $motionData = $this->parseEventNotificationAlert($value);
                 $this->handleMotionData($motionData);
             }
@@ -80,6 +67,8 @@ class ProcessCameraEvents extends IPSModule {
     private function handleMotionData($motionData) {
         $parent = $this->InstanceID;
         $notSetYet = "NotSet";
+        $channelId = $this->ReadPropertyString('ChannelId');
+        $savePath = $this->ReadPropertyString('SavePath');
 
         $kameraId = $this->manageVariable($parent, $motionData['channelName'], 0, 'Motion', true, 0, "");
         SetValueBoolean($kameraId, true);
@@ -112,8 +101,8 @@ class ProcessCameraEvents extends IPSModule {
         }
 
         if ($username != $notSetYet && $password != $notSetYet) {
-            $savePath = $this->ReadPropertyString('SavePath') . $motionData['ipAddress'] . ".jpg";
-            $this->downloadHikvisionSnapshot($motionData['ipAddress'], $this->ReadPropertyString('ChannelId'), $username, $password, $savePath);
+            $savePath .= $motionData['ipAddress'] . ".jpg";
+            $this->downloadHikvisionSnapshot($motionData['ipAddress'], $channelId, $username, $password, $savePath);
             $this->manageMedia($kameraId, "Last_Picture", $savePath);
         } else {
             echo "Please set UserName and Password in Variable";
