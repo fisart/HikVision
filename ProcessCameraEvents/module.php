@@ -63,7 +63,10 @@ class ProcessCameraEvents extends IPSModule {
                 $motionData = $this->parseEventNotificationAlert($value);
                 $this->handleMotionData($motionData);
             }
+        } else {
+            IPS_LogMessage("HIK","No Data");
         }
+        
     }
 
     private function handleMotionData($motionData) {
