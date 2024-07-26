@@ -167,14 +167,7 @@ class ProcessCameraEvents extends IPSModule {
     }
     
     // Example usage of the manageVariable function
-    public function Create() {
-        parent::Create();
-    
-        // Register variables with initial values and logging settings
-        $this->manageVariable('Motion', VARIABLETYPE_BOOLEAN, '~Switch', 0, false);
-        $this->manageVariable('CameraName', VARIABLETYPE_STRING, '', 1, '');
-        $this->manageVariable('DateTime', VARIABLETYPE_STRING, '', 2, '');
-    }
+   
 
     private function manageMedia($parent, $name, $imageFile) {
         $mediaId = @IPS_GetMediaIDByName($name, $parent);
