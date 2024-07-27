@@ -11,7 +11,8 @@
     },
     {
       "type": "Label",
-      "caption": "Please Note for this Module to work you need to install the Egg Timer Module from the IP-Symcon Modul Store"
+      "caption": "Please Note for this Module to work you need to first install the Egg Timer Module from the IP-Symcon Modul Store",
+      "bold": true
     },
     {
       "type": "ValidationTextBox",
@@ -35,15 +36,31 @@
   "actions": [],
   "status": [
     {
-      "code": 101,
+      "code": 102,
       "icon": "active",
       "caption": "Instance is active"
     },
     {
-      "code": 102,
+      "code": 104,
       "icon": "inactive",
       "caption": "Instance is inactive"
     },
+    {
+      "code": 101,
+      "icon": "inactive",
+      "caption": "Instanz wird erstellt"
+    },
+    {
+      "code": 103,
+      "icon": "inactive",
+      "caption": "Instanz wird gelöscht"
+    },
+    {
+      "code": 105,
+      "icon": "inactive",
+      "caption": "Instanz wurde nicht erstellt"
+    },
+
     {
       "code": 200,
       "icon": "error",
