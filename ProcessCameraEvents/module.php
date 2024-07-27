@@ -88,23 +88,31 @@ class ProcessCameraEvents extends IPSModule {
         $dateTime = $this->manageVariable($kameraId, "Date and Time", 3, '~TextBox', true, 0, "");
         SetValueString($dateTime, $motionData['dateTime']);
 
-        $eggTimerId = @IPS_GetObjectIDByName("Egg Timer", $kameraId);
-        if ($eggTimerId) {
-            RequestAction(IPS_GetObjectIDByName("Aktiv", $eggTimerId), true);
-        } else {
-            $insId = IPS_CreateInstance($this->ReadPropertyString('EggTimerModuleId'));
-            IPS_SetName($insId, "Egg Timer");
-            IPS_SetParent($insId, $kameraId);
-            IPS_ApplyChanges($insId);
-            RequestAction(IPS_GetObjectIDByName("Aktiv", $insId), true);
-            SetValueInteger(IPS_GetObjectIDByName("Zeit in Sekunden", $insId), $motion_active);
+        if (IPS_SemaphoreEnter($kameraId,1000)) 
+        {
+            $eggTimerId = @IPS_GetObjectIDByName("Egg Timer", $kameraId);
+            if ($eggTimerId) {
+                RequestAction(IPS_GetObjectIDByName("Aktiv", $eggTimerId), true);
+            } else {
+                $insId = IPS_CreateInstance($this->ReadPropertyString('EggTimerModuleId'));
+                IPS_SetName($insId, "Egg Timer");
+                IPS_SetParent($insId, $kameraId);
+                IPS_ApplyChanges($insId);
+                RequestAction(IPS_GetObjectIDByName("Aktiv", $insId), true);
+                SetValueInteger(IPS_GetObjectIDByName("Zeit in Sekunden", $insId), $motion_active);
 
-            $eid = IPS_CreateEvent(0);
-            IPS_SetEventTrigger($eid, 4, IPS_GetObjectIDByName("Aktiv", $insId));
-            IPS_SetParent($eid, $kameraId);
-            IPS_SetEventAction($eid, "{75C67945-BE11-5965-C569-602D43F84269}", ["VALUE" => false]);
-            IPS_SetEventActive($eid, true);
-            IPS_SetEventTriggerValue($eid, false);
+                $eid = IPS_CreateEvent(0);
+                IPS_SetEventTrigger($eid, 4, IPS_GetObjectIDByName("Aktiv", $insId));
+                IPS_SetParent($eid, $kameraId);
+                IPS_SetEventAction($eid, "{75C67945-BE11-5965-C569-602D43F84269}", ["VALUE" => false]);
+                IPS_SetEventActive($eid, true);
+                IPS_SetEventTriggerValue($eid, false);
+            }
+            IPS_SemaphoreLeave($kameraId);
+        }
+        else
+        {
+            return false;
         }
 
         if ($username != $notSetYet && $password != $notSetYet) {
