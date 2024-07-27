@@ -1,27 +1,41 @@
 {
-      "elements" => [
-            [
-                "type" => "ValidationTextBox",
-                "name" => "WebhookName",
-                "caption" => "Webhook Name",
-                "default" => "HIKVISION_EVENTS"
-            ],
-            [
-                "type" => "ValidationTextBox",
-                "name" => "ChannelId",
-                "caption" => "Channel ID",
-                "default" => "101"
-            ],
-            [
-                "type" => "ValidationTextBox",
-                "name" => "SavePath",
-                "caption" => "Save Path",
-                "default" => "webfront/user/"
-            ]
-        ]
-    ]),
-    "actions": [],
-    "status": []
+  "elements": [
+    {
+      "type": "ValidationTextBox",
+      "name": "WebhookName",
+      "caption": "Webhook Name",
+      "default": "HIKVISION_EVENTS"
+    },
+    {
+      "type": "ValidationTextBox",
+      "name": "ChannelId",
+      "caption": "Channel ID",
+      "default": "101"
+    },
+    {
+      "type": "ValidationTextBox",
+      "name": "SavePath",
+      "caption": "Save Path",
+      "default": "webfront/user/"
+    }
+  ],
+  "actions": [],
+  "status": [
+    {
+      "code": 101,
+      "icon": "active",
+      "caption": "Instance is active"
+    },
+    {
+      "code": 102,
+      "icon": "inactive",
+      "caption": "Instance is inactive"
+    },
+    {
+      "code": 200,
+      "icon": "error",
+      "caption": "Instance is in error state"
+    }
+  ]
 }
-
  
