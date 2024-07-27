@@ -5,6 +5,10 @@
       "type": "Label",
       "caption": "This Module works only with HIKVISION and ANNKE Cameras. First you need to configure Smart Events in the Camera Setup."
     },
+   {
+      "type": "Label",
+      "caption": "Please note : YourSystem/security/Web-Authentication  needs to be set to digest/basic"
+    },
     {
       "type": "Label",
       "caption": "Then you need to configure the Webhook call in the Camera Alarmserver (extended Network Setting)"
