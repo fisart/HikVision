@@ -24,6 +24,7 @@ class ProcessCameraEvents extends IPSModule {
 
     private function RegisterHook($WebHook)
     {
+        IPS_LogMessage("HIK","Manage WebHook");
         $ids = IPS_GetInstanceListByModuleID('{015A6EB8-D6E5-4B93-B496-0D3F77AE9FE1}');
         if (count($ids) > 0) {
             $hooks = json_decode(IPS_GetProperty($ids[0], 'Hooks'), true);
@@ -77,7 +78,7 @@ class ProcessCameraEvents extends IPSModule {
         $notSetYet = "NotSet";
         $channelId = $this->ReadPropertyString('ChannelId');
         $savePath = $this->ReadPropertyString('SavePath');
-
+        IPS_LogMessage("HIK","Handle Motion Data");
         $kameraId = $this->manageVariable($parent, $motionData['channelName'], 0, 'Motion', true, 0, "");
         SetValueBoolean($kameraId, true);
 
@@ -118,6 +119,7 @@ class ProcessCameraEvents extends IPSModule {
     }
 
     private function parseEventNotificationAlert($xmlString) {
+        IPS_LogMessage("HIK","Parse Event Notification Alert");
         $xml = @simplexml_load_string($xmlString, "SimpleXMLElement", LIBXML_NOCDATA);
         if ($xml === false) {
             return false;
@@ -131,7 +133,7 @@ class ProcessCameraEvents extends IPSModule {
     private function manageVariable($name, $type, $profile, $position, $initialValue, $archive = true, $aggregationType = 0) {
         // Check if variable already exists
         $varId = @$this->GetIDForIdent($name);
-    
+        IPS_LogMessage("HIK","Manage Variable");
         if ($varId === false) {
             // Register the variable if it does not exist
             $this->RegisterVariable($name, $name, $type, $profile, $position);
@@ -166,6 +168,7 @@ class ProcessCameraEvents extends IPSModule {
     
     private function RegisterVariable($ident, $name, $type, $profile, $position) {
         // MaintainVariable helps to register or update a variable
+        IPS_LogMessage("HIK","Register Variable");
         $this->MaintainVariable($ident, $name, $type, $profile, $position, true);
     }
     
@@ -173,6 +176,7 @@ class ProcessCameraEvents extends IPSModule {
    
 
     private function manageMedia($parent, $name, $imageFile) {
+        IPS_LogMessage("HIK","Manage Media");
         $mediaId = @IPS_GetMediaIDByName($name, $parent);
         if ($mediaId === false) {
             $mediaId = IPS_CreateMedia(1);
@@ -184,6 +188,7 @@ class ProcessCameraEvents extends IPSModule {
     }
 
     private function downloadHikvisionSnapshot($cameraIp, $channelId, $username, $password, $relativePath) {
+        IPS_LogMessage("HIK","Download Snapshot");
         $snapshotUrl = "http://$cameraIp/ISAPI/Streaming/channels/$channelId/picture";
         $ch = curl_init($snapshotUrl);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
