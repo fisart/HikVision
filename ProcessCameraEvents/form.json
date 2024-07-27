@@ -1,6 +1,5 @@
-public function GetConfigurationForm() {
-    return json_encode([
-        "elements" => [
+{
+      "elements" => [
             [
                 "type" => "ValidationTextBox",
                 "name" => "WebhookName",
@@ -20,5 +19,9 @@ public function GetConfigurationForm() {
                 "default" => "webfront/user/"
             ]
         ]
-    ]);
+    ]),
+    "actions": [],
+    "status": []
 }
+
+ 
