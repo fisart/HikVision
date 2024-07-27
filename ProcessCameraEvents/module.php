@@ -82,15 +82,16 @@ class ProcessCameraEvents extends IPSModule {
         $kameraId = $this->manageVariable($parent, $motionData['channelName'], 0, 'Motion', true, 0, "");
         SetValueBoolean($kameraId, true);
 
-        $kameraName = $this->manageVariable($kameraId, $motionData['ipAddress'], 3, '~TextBox', true, 0, "");
-        SetValueString($kameraName, $motionData['eventDescription']);
+        $kameraName_var_id = $this->manageVariable($kameraId, $motionData['ipAddress'], 3, '~TextBox', true, 0, "");
+
+        SetValueString($kameraName_var_id, $motionData['eventDescription']);
 
         $username = GetValueString($this->manageVariable($kameraId, "User Name", 3, '~TextBox', true, 0, $notSetYet));
         $password = GetValueString($this->manageVariable($kameraId, "Password", 3, '~TextBox', true, 0, $notSetYet));
         $dateTime = $this->manageVariable($kameraId, "Date and Time", 3, '~TextBox', true, 0, "");
         SetValueString($dateTime, $motionData['dateTime']);
 
-        $eggTimerId = @IPS_GetObjectIDByName("Egg Timer", $parent);
+        $eggTimerId = @IPS_GetObjectIDByName("Egg Timer", $kameraId);
         IPS_LogMessage("HIKMOD","Handle Motion Data Egg Timer ID: ".$eggTimerId );
         if ($eggTimerId) {
             RequestAction(IPS_GetObjectIDByName("Aktiv", $eggTimerId), true);
