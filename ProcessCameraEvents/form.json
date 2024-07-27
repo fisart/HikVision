@@ -7,7 +7,7 @@
     },
    {
       "type": "Label",
-      "caption": "Please note : YourSystem/security/Web-Authentication  needs to be set to digest/basic"
+      "caption": "Please note : In your Camera configuration the System/security/Web-Authentication  needs to be set to digest/basic"
     },
     {
       "type": "Label",
