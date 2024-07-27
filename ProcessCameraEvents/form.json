@@ -23,9 +23,10 @@
       "default": "webfront/user/"
     },
    {
-      "type": "ValidationTextBox",
+     "type": "NumberSpinner",
       "name": "MotionActive",
       "caption": "Duration for an Event to be Active in seconds",
+      "digits": 3
       "default": "30"
     }
 
