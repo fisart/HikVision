@@ -21,7 +21,14 @@
       "name": "SavePath",
       "caption": "Path to save Pictures",
       "default": "webfront/user/"
+    },
+   {
+      "type": "ValidationTextBox",
+      "name": "MotionActive",
+      "caption": "Duration for an Event to be Active in seconds",
+      "default": "30"
     }
+
   ],
   "actions": [],
   "status": [

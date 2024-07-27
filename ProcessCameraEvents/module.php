@@ -9,6 +9,7 @@ class ProcessCameraEvents extends IPSModule {
         $this->RegisterPropertyString('WebhookName', 'HIKVISION_EVENTS');
         $this->RegisterPropertyString('ChannelId', '101');
         $this->RegisterPropertyString('SavePath', 'webfront/user/');
+        $this->RegisterPropertyString('MotionActive', '30');
         $this->RegisterPropertyString('EggTimerModuleId', '{17843F0A-BFC8-A4BA-E219-A2D10FC8E5BE}');
         
         // Ensure the webhook is registered
@@ -74,6 +75,7 @@ class ProcessCameraEvents extends IPSModule {
         $notSetYet = "NotSet";
         $channelId = $this->ReadPropertyString('ChannelId');
         $savePath = $this->ReadPropertyString('SavePath');
+        $motion_active = $this->ReadPropertyString('MotionActive');
         $kameraId = $this->manageVariable($parent, $motionData['channelName'], 0, 'Motion', true, 0, "");
         SetValueBoolean($kameraId, true);
 
@@ -95,7 +97,7 @@ class ProcessCameraEvents extends IPSModule {
             IPS_SetParent($insId, $kameraId);
             IPS_ApplyChanges($insId);
             RequestAction(IPS_GetObjectIDByName("Aktiv", $insId), true);
-            SetValueInteger(IPS_GetObjectIDByName("Zeit in Sekunden", $insId), 300);
+            SetValueInteger(IPS_GetObjectIDByName("Zeit in Sekunden", $insId), $motion_active);
 
             $eid = IPS_CreateEvent(0);
             IPS_SetEventTrigger($eid, 4, IPS_GetObjectIDByName("Aktiv", $insId));
