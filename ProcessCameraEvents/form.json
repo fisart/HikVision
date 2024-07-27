@@ -3,7 +3,7 @@
 
     {
       "type": "Label",
-      "caption": "After a Camera has send an Event to the WebHook a set of variables will be created."
+      "caption": "After a HIKVISION Camera has send an Event to the WebHook (Alarm Center)  a set of variables will be created."
     },
     {
       "type": "Label",
@@ -31,7 +31,16 @@
       "name": "SavePath",
       "caption": "Save Path",
       "default": "webfront/user/"
+    },
+ {
+      "type": "NumberSpinner",
+      "name": "MotionActive",
+      "caption": "Duration the Motion Event stays activ in seconds",
+      "minimum": 0,
+      "maximum": 1000,
+      "default": 30
     }
+
   ],
   "actions": [],
   "status": [
