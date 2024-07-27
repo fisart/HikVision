@@ -3,22 +3,20 @@
 
    {
       "type": "Label",
-      "caption": "This Module works only with HIKVISION or ANNKE Cameras. First you need to configure Smart Events in the Camera Setup."
+      "caption": "This Module works only with HIKVISION and ANNKE Cameras. First you need to configure Smart Events in the Camera Setup."
     },
-   {
+    {
       "type": "Label",
       "caption": "Then you need to configure the Webhook call in the Camera Alarmserver (extended Network Setting)"
     },
-
     {
       "type": "Label",
-      "caption": "After a HIKVISION Camera has send an Event to the WebHook (Alarm Center)  a set of variables will be created for each Camera."
+      "caption": "After a HIKVISION Camera has send an Event to the Symcon  WebHook a set of variables will be created for each Camera."
     },
- {
+    {
       "type": "Label",
       "caption": "The Top Level variable is the Camera Name. Below the IP-Adress, Date+Time of the Event, Password, User Name, Picture of the last Event"
     },
-
     {
       "type": "Label",
       "caption": "If your Cameras have different Passwords/User IDS`s you need to enter the correct Data into the relevant Variable"
@@ -46,10 +44,9 @@
       "caption": "Save Path",
       "default": "webfront/user/"
     },
-
    {
       "type": "ValidationTextBox",
-      "name": "User Name",
+      "name": "UserName",
       "caption": "User Name",
       "default": "NotSet"
     },
@@ -59,7 +56,6 @@
       "caption": "Password",
       "default": "NotSet"
     },
-
     {
       "type": "NumberSpinner",
       "name": "MotionActive",
@@ -68,7 +64,6 @@
       "maximum": 1000,
       "default": 30
     }
-
   ],
   "actions": [],
   "status": [

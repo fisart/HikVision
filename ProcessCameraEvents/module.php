@@ -73,8 +73,9 @@ class ProcessCameraEvents extends IPSModule {
     }
 
     private function handleMotionData($motionData) {
+
+        $notSetYet = 'NotSet';
         $parent = $this->InstanceID;
-        $notSetYet = "NotSet";
         $channelId = $this->ReadPropertyString('ChannelId');
         $savePath = $this->ReadPropertyString('SavePath');
         $username = $this->ReadPropertyString('UserName');
