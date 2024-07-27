@@ -1,5 +1,24 @@
-{
-    "elements": [],
-    "actions": [],
-    "status": []
+public function GetConfigurationForm() {
+    return json_encode([
+        "elements" => [
+            [
+                "type" => "ValidationTextBox",
+                "name" => "WebhookName",
+                "caption" => "Webhook Name",
+                "default" => "HIKVISION_EVENTS"
+            ],
+            [
+                "type" => "ValidationTextBox",
+                "name" => "ChannelId",
+                "caption" => "Channel ID",
+                "default" => "101"
+            ],
+            [
+                "type" => "ValidationTextBox",
+                "name" => "SavePath",
+                "caption" => "Save Path",
+                "default" => "webfront/user/"
+            ]
+        ]
+    ]);
 }
