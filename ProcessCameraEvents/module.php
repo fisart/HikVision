@@ -24,7 +24,6 @@ class ProcessCameraEvents extends IPSModule {
 
     private function RegisterHook($WebHook)
     {
-        IPS_LogMessage("HIKMOD","Manage WebHook");
         $ids = IPS_GetInstanceListByModuleID('{015A6EB8-D6E5-4B93-B496-0D3F77AE9FE1}');
         if (count($ids) > 0) {
             $hooks = json_decode(IPS_GetProperty($ids[0], 'Hooks'), true);
@@ -47,7 +46,6 @@ class ProcessCameraEvents extends IPSModule {
     }
 
     public function  ProcessHookData() {
-        IPS_LogMessage("HIKMOD","Process Starts");
         $eggTimerModuleId = $this->ReadPropertyString('EggTimerModuleId');
         if (!IPS_GetModule($eggTimerModuleId)) {
             echo "Bitte erst das Egg Timer Modul aus dem Modul Store installieren";
@@ -56,13 +54,11 @@ class ProcessCameraEvents extends IPSModule {
 
         $webhookData = file_get_contents("php://input", true);
         if ($webhookData !== "") {
-            IPS_LogMessage("HIKMOD","php input");
             $motionData = $this->parseEventNotificationAlert($webhookData);
             if (is_array($motionData)) {
                 $this->handleMotionData($motionData);
             }
         } elseif (is_array($_POST)) {
-            IPS_LogMessage("HIKMOD","Post");
             foreach ($_POST as $value) {
                 $motionData = $this->parseEventNotificationAlert($value);
                 $this->handleMotionData($motionData);
@@ -78,7 +74,6 @@ class ProcessCameraEvents extends IPSModule {
         $notSetYet = "NotSet";
         $channelId = $this->ReadPropertyString('ChannelId');
         $savePath = $this->ReadPropertyString('SavePath');
-        IPS_LogMessage("HIKMOD","Handle Motion Data Parent : ".$parent);
         $kameraId = $this->manageVariable($parent, $motionData['channelName'], 0, 'Motion', true, 0, "");
         SetValueBoolean($kameraId, true);
 
@@ -92,7 +87,6 @@ class ProcessCameraEvents extends IPSModule {
         SetValueString($dateTime, $motionData['dateTime']);
 
         $eggTimerId = @IPS_GetObjectIDByName("Egg Timer", $kameraId);
-        IPS_LogMessage("HIKMOD","Handle Motion Data Egg Timer ID: ".$eggTimerId );
         if ($eggTimerId) {
             RequestAction(IPS_GetObjectIDByName("Aktiv", $eggTimerId), true);
         } else {
@@ -121,7 +115,6 @@ class ProcessCameraEvents extends IPSModule {
     }
 
     private function parseEventNotificationAlert($xmlString) {
-        IPS_LogMessage("HIKMOD","Parse Event Notification Alert");
         $xml = @simplexml_load_string($xmlString, "SimpleXMLElement", LIBXML_NOCDATA);
         if ($xml === false) {
             return false;
@@ -154,17 +147,12 @@ class ProcessCameraEvents extends IPSModule {
 
         return $varId;
     }
-    private function RegisterVariable($ident, $name, $type, $profile, $position) {
-        // MaintainVariable helps to register or update a variable
-        IPS_LogMessage("HIKMOD","Register Variable");
-        $this->MaintainVariable($ident, $name, $type, $profile, $position, true);
-    }
+    
     
     // Example usage of the manageVariable function
    
 
     private function manageMedia($parent, $name, $imageFile) {
-        IPS_LogMessage("HIKMOD","Manage Media");
         $mediaId = @IPS_GetMediaIDByName($name, $parent);
         if ($mediaId === false) {
             $mediaId = IPS_CreateMedia(1);
@@ -176,7 +164,6 @@ class ProcessCameraEvents extends IPSModule {
     }
 
     private function downloadHikvisionSnapshot($cameraIp, $channelId, $username, $password, $relativePath) {
-        IPS_LogMessage("HIKMOD","Download Snapshot");
         $snapshotUrl = "http://$cameraIp/ISAPI/Streaming/channels/$channelId/picture";
         $ch = curl_init($snapshotUrl);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
