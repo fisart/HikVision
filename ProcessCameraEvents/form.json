@@ -3,9 +3,7 @@
 
   {
       "type": "Label",
-      "caption": "After a Camera has send an Event to the WebHook a set of variables will be created. 
-If you want to download the picture at the time of the Event you will have to enter the User Name and the Password into the relevant Variable. 
-Please Note for this Module to work you need to install the Egg Timer Module from the IP-Symcon Modul Store"
+      "caption": "After a Camera has send an Event to the WebHook a set of variables will be created. If you want to download the picture at the time of the Event you will have to enter the User Name and the Password into the relevant Variable. Please Note for this Module to work you need to install the Egg Timer Module from the IP-Symcon Modul Store"
     },
     {
       "type": "ValidationTextBox",
