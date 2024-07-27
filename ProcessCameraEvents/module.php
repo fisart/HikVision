@@ -9,6 +9,8 @@ class ProcessCameraEvents extends IPSModule {
         $this->RegisterPropertyString('WebhookName', 'HIKVISION_EVENTS');
         $this->RegisterPropertyString('ChannelId', '101');
         $this->RegisterPropertyString('SavePath', 'webfront/user/');
+        $this->RegisterPropertyString('UserName', 'NotSet');
+        $this->RegisterPropertyString('Password', 'NotSet');
         $this->RegisterPropertyInteger('MotionActive', '30');
         $this->RegisterPropertyString('EggTimerModuleId', '{17843F0A-BFC8-A4BA-E219-A2D10FC8E5BE}');
         
@@ -75,6 +77,8 @@ class ProcessCameraEvents extends IPSModule {
         $notSetYet = "NotSet";
         $channelId = $this->ReadPropertyString('ChannelId');
         $savePath = $this->ReadPropertyString('SavePath');
+        $username = $this->ReadPropertyString('UserName');
+        $password= $this->ReadPropertyString('Password');
         $motion_active = $this->ReadPropertyInteger('MotionActive');
         $kameraId = $this->manageVariable($parent, $motionData['channelName'], 0, 'Motion', true, 0, "");
         SetValueBoolean($kameraId, true);
@@ -83,8 +87,8 @@ class ProcessCameraEvents extends IPSModule {
 
         SetValueString($kameraName_var_id, $motionData['eventDescription']);
 
-        $username = GetValueString($this->manageVariable($kameraId, "User Name", 3, '~TextBox', true, 0, $notSetYet));
-        $password = GetValueString($this->manageVariable($kameraId, "Password", 3, '~TextBox', true, 0, $notSetYet));
+        $username = GetValueString($this->manageVariable($kameraId, "User Name", 3, '~TextBox', true, 0, $username));
+        $password = GetValueString($this->manageVariable($kameraId, "Password", 3, '~TextBox', true, 0, $password ));
         $dateTime = $this->manageVariable($kameraId, "Date and Time", 3, '~TextBox', true, 0, "");
         SetValueString($dateTime, $motionData['dateTime']);
 

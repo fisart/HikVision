@@ -1,13 +1,27 @@
 {
   "elements": [
 
-    {
+   {
       "type": "Label",
-      "caption": "After a HIKVISION Camera has send an Event to the WebHook (Alarm Center)  a set of variables will be created."
+      "caption": "This Module works only with HIKVISION or ANNKE Cameras. First you need to configure Smart Events in the Camera Setup."
     },
+   {
+      "type": "Label",
+      "caption": "Then you need to configure the Webhook call in the Camera Alarmserver (extended Network Setting)"
+    },
+
     {
       "type": "Label",
-      "caption": "If you want to download the picture at the time of the Event you will have to enter the User Name and the Password into the relevant Variable."
+      "caption": "After a HIKVISION Camera has send an Event to the WebHook (Alarm Center)  a set of variables will be created for each Camera."
+    },
+ {
+      "type": "Label",
+      "caption": "The Top Level variable is the Camera Name. Below the IP-Adress, Date+Time of the Event, Password, User Name, Picture of the last Event"
+    },
+
+    {
+      "type": "Label",
+      "caption": "If your Cameras have different Passwords/User IDS`s you need to enter the correct Data into the relevant Variable"
     },
     {
       "type": "Label",
@@ -32,7 +46,21 @@
       "caption": "Save Path",
       "default": "webfront/user/"
     },
- {
+
+   {
+      "type": "ValidationTextBox",
+      "name": "User Name",
+      "caption": "User Name",
+      "default": "NotSet"
+    },
+   {
+      "type": "ValidationTextBox",
+      "name": "Password",
+      "caption": "Password",
+      "default": "NotSet"
+    },
+
+    {
       "type": "NumberSpinner",
       "name": "MotionActive",
       "caption": "Duration the Motion Event stays activ in seconds",
