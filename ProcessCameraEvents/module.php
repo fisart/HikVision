@@ -169,7 +169,7 @@ class ProcessCameraEvents extends IPSModule {
 
     private function manageMedia($parent, $name, $relativePath) {
         $mediaId = @IPS_GetMediaIDByName($name, $parent);
-        $savePath = IPS_GetKernelDir() . DIRECTORY_SEPARATOR . $relativePath;
+        $savePath = IPS_GetKernelDir() . $relativePath;
         IPS_LogMessage("HIKAF", "Path 2 :".$savePath);
         if ($mediaId === false) {
             $mediaId = IPS_CreateMedia(1);
