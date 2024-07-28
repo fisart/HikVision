@@ -170,6 +170,7 @@ class ProcessCameraEvents extends IPSModule {
     private function manageMedia($parent, $name, $relativePath) {
         $mediaId = @IPS_GetMediaIDByName($name, $parent);
         $savePath = IPS_GetKernelDir() . $relativePath;
+        $savePath = '/var/lib/symcon/webfront/user/HIKVISION/192.168.50.4.jpg';
         IPS_LogMessage("HIKAF", "Path 2 : ".$savePath);
         if ($mediaId === false) {
             $mediaId = IPS_CreateMedia(1);
@@ -192,7 +193,7 @@ class ProcessCameraEvents extends IPSModule {
         curl_close($ch);
 
         if ($httpCode == 200 && $imageData !== false) {
-            $savePath = IPS_GetKernelDir() . DIRECTORY_SEPARATOR . $relativePath."abc";
+            $savePath = IPS_GetKernelDir() . DIRECTORY_SEPARATOR . $relativePath;
             IPS_LogMessage("HIKAF", "Path 1 : ".$savePath);
             $fileHandle = fopen($savePath, 'w');
             if ($fileHandle !== false) {
