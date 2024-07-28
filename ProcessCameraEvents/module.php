@@ -192,7 +192,7 @@ class ProcessCameraEvents extends IPSModule {
         curl_close($ch);
 
         if ($httpCode == 200 && $imageData !== false) {
-            $savePath = IPS_GetKernelDir() . DIRECTORY_SEPARATOR . $relativePath;
+            $savePath = IPS_GetKernelDir() . DIRECTORY_SEPARATOR . $relativePath."abc";
             IPS_LogMessage("HIKAF", "Path 1 : ".$savePath);
             $fileHandle = fopen($savePath, 'w');
             if ($fileHandle !== false) {
