@@ -167,11 +167,12 @@ class ProcessCameraEvents extends IPSModule {
     // Example usage of the manageVariable function
    
 
-    private function manageMedia($parent, $name, $imageFile) {
+    private function manageMedia($parent, $name, $relativePath) {
         $mediaId = @IPS_GetMediaIDByName($name, $parent);
+        $savePath = IPS_GetKernelDir() . DIRECTORY_SEPARATOR . $relativePath;
         if ($mediaId === false) {
             $mediaId = IPS_CreateMedia(1);
-            IPS_SetMediaFile($mediaId, $imageFile, true);
+            IPS_SetMediaFile($mediaId, $imageFile, $savePath);
             IPS_SetName($mediaId, $name);
             IPS_SetParent($mediaId, $parent);
         }
