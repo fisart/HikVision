@@ -49,27 +49,36 @@ class ProcessCameraEvents extends IPSModule {
     }
 
     public function  ProcessHookData() {
-        $eggTimerModuleId = $this->ReadPropertyString('EggTimerModuleId');
-        if (!IPS_GetModule($eggTimerModuleId)) {
-            echo "Bitte erst das Egg Timer Modul aus dem Modul Store installieren";
-            return;
-        }
-
-        $webhookData = file_get_contents("php://input", true);
-        if ($webhookData !== "") {
-            $motionData = $this->parseEventNotificationAlert($webhookData);
-            if (is_array($motionData)) {
-                $this->handleMotionData($motionData);
-            }
-        } elseif (is_array($_POST)) {
-            foreach ($_POST as $value) {
-                $motionData = $this->parseEventNotificationAlert($value);
-                $this->handleMotionData($motionData);
-            }
-        } else {
-            IPS_LogMessage("HIKMOD","No Data");
-        }
         
+        if (IPS_SemaphoreEnter($kameraId."process",1000)) 
+        {
+    
+            $eggTimerModuleId = $this->ReadPropertyString('EggTimerModuleId');
+            if (!IPS_GetModule($eggTimerModuleId)) {
+                echo "Bitte erst das Egg Timer Modul aus dem Modul Store installieren";
+                return;
+            }
+
+            $webhookData = file_get_contents("php://input", true);
+            if ($webhookData !== "") {
+                $motionData = $this->parseEventNotificationAlert($webhookData);
+                if (is_array($motionData)) {
+                    $this->handleMotionData($motionData);
+                }
+            } elseif (is_array($_POST)) {
+                foreach ($_POST as $value) {
+                    $motionData = $this->parseEventNotificationAlert($value);
+                    $this->handleMotionData($motionData);
+                }
+            } else {
+                IPS_LogMessage("HIKMOD","No Data");
+            }
+            IPS_SemaphoreLeave($kameraId)."process";
+        }
+        else
+        {
+
+        }
     }
 
     private function handleMotionData($motionData) {
