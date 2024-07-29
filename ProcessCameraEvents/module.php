@@ -123,7 +123,7 @@ class ProcessCameraEvents extends IPSModule {
         if ($username != $notSetYet && $password != $notSetYet) {
             $savePath .= $motionData['ipAddress'] . ".jpg";
             $this->downloadHikvisionSnapshot($motionData['ipAddress'], $channelId, $username, $password, $savePath);
-            sleep(20);
+            sleep(1);
             $this->manageMedia($kameraId, "Last_Picture", $savePath);
         } else {
             echo "Please set UserName and Password in Variable";
