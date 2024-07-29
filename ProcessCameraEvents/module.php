@@ -168,14 +168,11 @@ class ProcessCameraEvents extends IPSModule {
     // Example usage of the manageVariable function
    
 
-    private function manageMedia($parent, $name, $relativePath) {
+    private function manageMedia($parent, $name, $imageFile) {
         $mediaId = @IPS_GetMediaIDByName($name, $parent);
-        //$savePath = IPS_GetKernelDir() . DIRECTORY_SEPARATOR . $relativePath;
-        $savePath = "192.168.50.4.jpg";
-        IPS_LogMessage("HIKAF", "Path 2 : ".$savePath." Name ".$name." Parent ".$parent);
         if ($mediaId === false) {
             $mediaId = IPS_CreateMedia(1);
-            IPS_SetMediaFile($mediaId, $imageFile, $savePath);
+            IPS_SetMediaFile($mediaId, $imageFile, true);
             IPS_SetName($mediaId, $name);
             IPS_SetParent($mediaId, $parent);
         }
