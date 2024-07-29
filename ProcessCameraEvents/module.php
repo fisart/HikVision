@@ -200,30 +200,36 @@ class ProcessCameraEvents extends IPSModule {
 
     private function downloadHikvisionSnapshot($cameraIp, $channelId, $username, $password, $relativePath) {
         $snapshotUrl = "http://$cameraIp/ISAPI/Streaming/channels/$channelId/picture";
-        $ch = curl_init($snapshotUrl);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
-        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-
-        $imageData = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        if ($httpCode == 200 && $imageData !== false) {
-            $savePath = IPS_GetKernelDir() . DIRECTORY_SEPARATOR . $relativePath;
-            IPS_LogMessage("HIKAF", "Path 1 : ".$savePath);
-            $fileHandle = fopen($savePath, 'w');
-            if ($fileHandle !== false) {
-                fwrite($fileHandle, $imageData);
-                fclose($fileHandle);
-                return true;
-            } else {
-                return false;
+        $retryCount = 3;
+        
+        for ($i = 0; $i < $retryCount; $i++) {
+            $ch = curl_init($snapshotUrl);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+            curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    
+            $imageData = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+    
+            if ($httpCode == 200 && $imageData !== false) {
+                $savePath = IPS_GetKernelDir() . DIRECTORY_SEPARATOR . $relativePath;
+                IPS_LogMessage("HIKAF", "Path 1 : ".$savePath);
+                $fileHandle = fopen($savePath, 'w');
+                if ($fileHandle !== false) {
+                    fwrite($fileHandle, $imageData);
+                    fclose($fileHandle);
+                    return true;
+                } else {
+                    return false;
+                }
             }
-        } else {
-            return false;
         }
+    
+        // If all retries fail, return false
+        return false;
     }
+    
 }
 
 ?>
