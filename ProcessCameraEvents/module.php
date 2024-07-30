@@ -191,10 +191,12 @@ class ProcessCameraEvents extends IPSModule {
         $mediaId = @IPS_GetMediaIDByName($name, $parent);
         if ($mediaId === false) {
             $mediaId = IPS_CreateMedia(1);
-            IPS_SetMediaFile($mediaId, $imageFile, true);
             IPS_SetName($mediaId, $name);
             IPS_SetParent($mediaId, $parent);
         }
+        IPS_SetMediaFile($mediaId, $imageFile, true);
+   
+        
         return $mediaId;
     }
 
