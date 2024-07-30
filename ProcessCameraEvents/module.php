@@ -32,6 +32,7 @@ class ProcessCameraEvents extends IPSModule {
             $hooks = json_decode(IPS_GetProperty($ids[0], 'Hooks'), true);
             $found = false;
             foreach ($hooks as $index => $hook) {
+                IPS_LogMessage("HIKAF", "Hook : ".$hook."  Webhook ".$WebHook);
                 if ($hook['Hook'] == $WebHook) {
                     if ($hook['TargetID'] == $this->InstanceID) {
                         return;
@@ -216,7 +217,6 @@ class ProcessCameraEvents extends IPSModule {
     
             if ($httpCode == 200 && $imageData !== false) {
                 $savePath = IPS_GetKernelDir() . DIRECTORY_SEPARATOR . $relativePath;
-                IPS_LogMessage("HIKAF", "Path 1 : ".$savePath);
                 $fileHandle = fopen($savePath, 'w');
                 if ($fileHandle !== false) {
                     fwrite($fileHandle, $imageData);
