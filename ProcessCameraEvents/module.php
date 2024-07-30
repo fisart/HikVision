@@ -28,12 +28,13 @@ class ProcessCameraEvents extends IPSModule {
     private function RegisterHook($WebHook)
     {
         $ids = IPS_GetInstanceListByModuleID('{015A6EB8-D6E5-4B93-B496-0D3F77AE9FE1}');
+        $find_Hook = '/hook/'.$WebHook;
         if (count($ids) > 0) {
             $hooks = json_decode(IPS_GetProperty($ids[0], 'Hooks'), true);
             $found = false;
             foreach ($hooks as $index => $hook) {
-                IPS_LogMessage("HIKAF", "Hook : ".$hook['Hook']."  Webhook ".$WebHook);
-                if ($hook['Hook'] == $WebHook) {
+                IPS_LogMessage("HIKAF", "Hook : ".$hook['Hook']."  Webhook ".$find_Hook);
+                if ($hook['Hook'] == $find_Hook) {
                     if ($hook['TargetID'] == $this->InstanceID) {
                         return;
                     }
