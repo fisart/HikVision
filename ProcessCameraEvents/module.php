@@ -121,6 +121,7 @@ class ProcessCameraEvents extends IPSModule {
             {
                 $eggTimerId = @IPS_GetObjectIDByName("Egg Timer", $kameraId);
                 if ($eggTimerId) {
+                    SetValueInteger(IPS_GetObjectIDByName("Zeit in Sekunden", $eggTimerId), $motion_active);
                     RequestAction(IPS_GetObjectIDByName("Aktiv", $eggTimerId), true);
                 } else {
                     $insId = IPS_CreateInstance($this->ReadPropertyString('EggTimerModuleId'));
@@ -129,7 +130,6 @@ class ProcessCameraEvents extends IPSModule {
                     IPS_ApplyChanges($insId);
                     RequestAction(IPS_GetObjectIDByName("Aktiv", $insId), true);
                     SetValueInteger(IPS_GetObjectIDByName("Zeit in Sekunden", $insId), $motion_active);
-
                     $eid = IPS_CreateEvent(0);
                     IPS_SetEventTrigger($eid, 4, IPS_GetObjectIDByName("Aktiv", $insId));
                     IPS_SetParent($eid, $kameraId);
