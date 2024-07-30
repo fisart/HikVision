@@ -33,7 +33,6 @@ class ProcessCameraEvents extends IPSModule {
             $hooks = json_decode(IPS_GetProperty($ids[0], 'Hooks'), true);
             $found = false;
             foreach ($hooks as $index => $hook) {
-                IPS_LogMessage("HIKAF", "Hook : ".$hook['Hook']."  Webhook ".$find_Hook);
                 if ($hook['Hook'] == $find_Hook) {
                     if ($hook['TargetID'] == $this->InstanceID) {
                         return;
