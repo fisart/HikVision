@@ -8,7 +8,7 @@ class ProcessCameraEvents extends IPSModule {
         // Register properties
         $this->RegisterPropertyString('WebhookName', 'HIKVISION_EVENTS');
         $this->RegisterPropertyString('ChannelId', '101');
-        $this->RegisterPropertyString('SavePath', 'webfront/user/');
+        $this->RegisterPropertyString('SavePath', '/user/');
         $this->RegisterPropertyString('UserName', 'NotSet');
         $this->RegisterPropertyString('Password', 'NotSet');
         $this->RegisterPropertyInteger('MotionActive', '30');

@@ -46,7 +46,7 @@
       "type": "ValidationTextBox",
       "name": "SavePath",
       "caption": "Save Path",
-      "default": "webfront/user/"
+      "default": "/user/"
     },
    {
       "type": "ValidationTextBox",
