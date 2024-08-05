@@ -22,7 +22,7 @@ class ProcessCameraEvents extends IPSModule {
         parent::ApplyChanges();
         
         // Ensure the webhook is registered
-        //$this->RegisterHook($this->ReadPropertyString('WebhookName'));
+        $this->RegisterHook($this->ReadPropertyString('WebhookName'));
     }
 
     private function RegisterHook($WebHook)
@@ -31,7 +31,25 @@ class ProcessCameraEvents extends IPSModule {
         $find_Hook = '/hook/'.$WebHook;
         if (count($ids) > 0) {
             $hooks = json_decode(IPS_GetProperty($ids[0], 'Hooks'), true);
-            $found = false;
+            $hook_connected_to_script = false;
+            $correct_hook_installed = false;
+            $correct_hook_with_wrong_name_installed = false;
+            foreach ($hooks as $index => $hook) {
+                if ($hook['TargetID'] == $this->InstanceID) {
+                    $hook_connected_to_script = true;
+                    if  ($hook['Hook'] == $find_Hook) {
+                        $correct_hook_installed = true;
+                        $hooks[$index]['TargetID'] = $this->InstanceID;
+                        return;
+                    }
+                    else{
+                        $correct_hook_with_wrong_name_installed = true; 
+                        $hooks[$index]['TargetID'] = $this->InstanceID;
+                        return;                      
+                    }
+                }
+            }
+            /*
             foreach ($hooks as $index => $hook) {
                 if ($hook['Hook'] == $find_Hook) {
                     if ($hook['TargetID'] == $this->InstanceID) {
@@ -41,11 +59,12 @@ class ProcessCameraEvents extends IPSModule {
                     $found = true;
                 }
             }
-            if (!$found) {
+                */
+            if (!$correct_hook_installed) {
                 $hooks[] = ['Hook' => $WebHook, 'TargetID' => $this->InstanceID];
-            }
-            IPS_SetProperty($ids[0], 'Hooks', json_encode($hooks));
-            IPS_ApplyChanges($ids[0]);
+                IPS_SetProperty($ids[0], 'Hooks', json_encode($hooks));
+                IPS_ApplyChanges($ids[0]);
+            }  
         }
     }
 
