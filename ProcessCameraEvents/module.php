@@ -44,13 +44,13 @@ class ProcessCameraEvents extends IPSModule {
                         $correct_hook_installed = true;
                         $hooks[$index]['TargetID'] = $this->InstanceID;
                         IPS_LogMessage("HIKMOD","Webhook bereits mit Instanz verbunden und korrekter Webhook Name");
-                        return;
+                        break;
                     }
                     else{
                         $correct_hook_with_wrong_name_installed = true; 
                         $hooks[$index]['TargetID'] = $this->InstanceID;
                         IPS_LogMessage("HIKMOD","Webhook bereits mit Instanz verbunden und neuer Name wird eingetragen");
-                        return;                      
+                        break;                 
                     }
                 }
             }
