@@ -155,7 +155,7 @@ class ProcessCameraEvents extends IPSModule {
                 //return false;
             } 
             IPS_LogMessage("HIKMOD","Leave process Semaphore  ".$kameraId);
-            IPS_SemaphoreLeave($kameraId)."process";
+            IPS_SemaphoreLeave($kameraId."process");
         }
         else
         {
