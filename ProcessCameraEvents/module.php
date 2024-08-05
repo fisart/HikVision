@@ -31,21 +31,25 @@ class ProcessCameraEvents extends IPSModule {
         $ids = IPS_GetInstanceListByModuleID('{015A6EB8-D6E5-4B93-B496-0D3F77AE9FE1}');
         $find_Hook = '/hook/'.$WebHook;
         if (count($ids) > 0) {
+            IPS_LogMessage("HIKMOD","Webhooks vorhanden");
             $hooks = json_decode(IPS_GetProperty($ids[0], 'Hooks'), true);
             $hook_connected_to_script = false;
             $correct_hook_installed = false;
             $correct_hook_with_wrong_name_installed = false;
             foreach ($hooks as $index => $hook) {
                 if ($hook['TargetID'] == $this->InstanceID) {
+                    IPS_LogMessage("HIKMOD","Webhook bereits mit Instanz verbunden");
                     $hook_connected_to_script = true;
                     if  ($hook['Hook'] == $find_Hook) {
                         $correct_hook_installed = true;
                         $hooks[$index]['TargetID'] = $this->InstanceID;
+                        IPS_LogMessage("HIKMOD","Webhook bereits mit Instanz verbunden und korrekter Webhook Name");
                         return;
                     }
                     else{
                         $correct_hook_with_wrong_name_installed = true; 
                         $hooks[$index]['TargetID'] = $this->InstanceID;
+                        IPS_LogMessage("HIKMOD","Webhook bereits mit Instanz verbunden und neuer Name wird eingetragen");
                         return;                      
                     }
                 }
@@ -62,10 +66,17 @@ class ProcessCameraEvents extends IPSModule {
             }
                 */
             if (!$correct_hook_installed) {
+                IPS_LogMessage("HIKMOD","Korrekter Webhook nicht installiert");
                 $hooks[] = ['Hook' => $WebHook, 'TargetID' => $this->InstanceID];
                 IPS_SetProperty($ids[0], 'Hooks', json_encode($hooks));
                 IPS_ApplyChanges($ids[0]);
             }  
+            else{
+                IPS_LogMessage("HIKMOD","Korrekter Webhook installiert");
+            }
+        }
+        else{
+            IPS_LogMessage("HIKMOD","Keine Webhooks vorhanden");
         }
     }
 
