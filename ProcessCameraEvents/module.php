@@ -52,7 +52,7 @@ class ProcessCameraEvents extends IPSModule {
     public function  ProcessHookData() {
         
    
-            IPS_LogMessage("HIKMOD","Webhook Called");         
+            IPS_LogMessage("HIKMOD","=======================Start of Script Webhook Processing============================");         
             $eggTimerModuleId = $this->ReadPropertyString('EggTimerModuleId');
             if (!IPS_GetModule($eggTimerModuleId)) {
                 IPS_LogMessage("HIKMOD","Bitte erst das Egg Timer Modul aus dem Modul Store installieren");
@@ -76,11 +76,11 @@ class ProcessCameraEvents extends IPSModule {
             } else {
                 IPS_LogMessage("HIKMOD","No Data");
             }
- 
+            IPS_LogMessage("HIKMOD","=======================END of Script Webhook Processing============================");         
     }
 
     private function handleMotionData($motionData) {
-
+        IPS_LogMessage("HIKMOD","--------------------------------Start of Script Motion Data -------------------".$kameraId);
         $notSetYet = 'NotSet';
         $parent = $this->InstanceID;
         $channelId = $this->ReadPropertyString('ChannelId');
@@ -159,9 +159,9 @@ class ProcessCameraEvents extends IPSModule {
         }
         else
         {
-            IPS_LogMessage("HIKMOD"," Else no semaphore leave ".$kameraId);
+            IPS_LogMessage("HIKMOD"," Semaphore Active. No execution for this Data ".$kameraId);
         }  
-        IPS_LogMessage("HIKMOD","Processing End reached  no semaphore leave ".$kameraId);
+        IPS_LogMessage("HIKMOD","--------------------------------End of Script Motion Data -------------------".$kameraId);
     }
 
     private function parseEventNotificationAlert($xmlString) {
