@@ -91,6 +91,7 @@ class ProcessCameraEvents extends IPSModule {
         $kameraId = $this->manageVariable($parent, $motionData['channelName'], 0, 'Motion', true, 0, "");
         if (IPS_SemaphoreEnter($kameraId."process",1000)) 
         {
+            IPS_LogMessage("HIKMOD","Semaphore process wurde betreten  ".$kameraId);
             SetValueBoolean($kameraId, true);
             $delay_still_active  = false;
             $eggTimerId = @IPS_GetObjectIDByName("Egg Timer", $kameraId);
