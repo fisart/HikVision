@@ -62,6 +62,9 @@ class ProcessCameraEvents extends IPSModule {
             }  
             if(!$hook_connected_to_script ){
                 IPS_LogMessage("HIKMOD","Kein  Webhook für die Instanz installiert");
+                $hooks[] = ['Hook' => $WebHook, 'TargetID' => $this->InstanceID];
+                IPS_SetProperty($ids[0], 'Hooks', json_encode($hooks));
+                IPS_ApplyChanges($ids[0]);
             }
         }
         else{
