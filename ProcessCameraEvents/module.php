@@ -140,20 +140,20 @@ class ProcessCameraEvents extends IPSModule {
                 }
                 else
                 {
-                    IPS_LogMessage("HIKMOD","Leave process Semphore because kameraID Semaphore is set ".$kameraId);
-                    IPS_SemaphoreLeave($kameraId)."process";
-                    return false;
+                    //IPS_LogMessage("HIKMOD","Leave process Semphore because kameraID Semaphore is set ".$kameraId);
+                    //IPS_SemaphoreLeave($kameraId)."process";
+                    //return false;
                 }
-                IPS_LogMessage("HIKMOD","Leave process Semphore Delay was not active ".$kameraId);
-                IPS_SemaphoreLeave($kameraId)."process";                
+                //IPS_LogMessage("HIKMOD","Leave process Semphore Delay was not active ".$kameraId);
+                //IPS_SemaphoreLeave($kameraId)."process";                
             }
             else
             {
-                IPS_LogMessage("HIKMOD","Leave process Semphore because Delay is still active no Data processing ".$kameraId);
-                IPS_SemaphoreLeave($kameraId)."process";
-                return false;
+                //IPS_LogMessage("HIKMOD","Leave process Semphore because Delay is still active no Data processing ".$kameraId);
+                //IPS_SemaphoreLeave($kameraId)."process";
+                //return false;
             } 
-            IPS_LogMessage("HIKMOD","Leave process Semphore because Data has been processed ".$kameraId);
+            IPS_LogMessage("HIKMOD","Leave process Semaphore  ".$kameraId);
             IPS_SemaphoreLeave($kameraId)."process";
         }
         else
