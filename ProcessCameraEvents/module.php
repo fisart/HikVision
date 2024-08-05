@@ -20,13 +20,14 @@ class ProcessCameraEvents extends IPSModule {
 
     public function ApplyChanges() {
         parent::ApplyChanges();
-        
+        IPS_LogMessage("HIKMOD","Apply changes called");
         // Ensure the webhook is registered
         $this->RegisterHook($this->ReadPropertyString('WebhookName'));
     }
 
     private function RegisterHook($WebHook)
     {
+        IPS_LogMessage("HIKMOD","Register Hook Called");
         $ids = IPS_GetInstanceListByModuleID('{015A6EB8-D6E5-4B93-B496-0D3F77AE9FE1}');
         $find_Hook = '/hook/'.$WebHook;
         if (count($ids) > 0) {
