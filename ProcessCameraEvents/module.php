@@ -56,7 +56,7 @@ class ProcessCameraEvents extends IPSModule {
             }
             if ($correct_hook_with_wrong_name_installed) {
                     IPS_LogMessage("HIKMOD","Korrekter Webhook mit falschem Namen installiert");
-                    $hooks[] = ['Hook' => $WebHook, 'TargetID' => $this->InstanceID];
+                    $hooks[$index] = ['Hook' => $WebHook, 'TargetID' => $this->InstanceID];
                     IPS_SetProperty($ids[0], 'Hooks', json_encode($hooks));
                     IPS_ApplyChanges($ids[0]);
             }  
