@@ -52,20 +52,23 @@ class ProcessCameraEvents extends IPSModule {
     public function  ProcessHookData() {
         
    
-            
+            IPS_LogMessage("HIKMOD","Webhook Called");         
             $eggTimerModuleId = $this->ReadPropertyString('EggTimerModuleId');
             if (!IPS_GetModule($eggTimerModuleId)) {
-                echo "Bitte erst das Egg Timer Modul aus dem Modul Store installieren";
+                IPS_LogMessage("HIKMOD","Bitte erst das Egg Timer Modul aus dem Modul Store installieren");
                 return;
             }
 
             $webhookData = file_get_contents("php://input", true);
             if ($webhookData !== "") {
+                IPS_LogMessage("HIKMOD","Webhook has delivered File Data");
                 $motionData = $this->parseEventNotificationAlert($webhookData);
                 if (is_array($motionData)) {
+                    IPS_LogMessage("HIKMOD","Motion Data is Array");
                     $this->handleMotionData($motionData);
                 }
             } elseif (is_array($_POST)) {
+                IPS_LogMessage("HIKMOD","Webhook has delivered Post Data");
                 foreach ($_POST as $value) {
                     $motionData = $this->parseEventNotificationAlert($value);
                     $this->handleMotionData($motionData);
