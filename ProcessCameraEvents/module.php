@@ -43,25 +43,25 @@ class ProcessCameraEvents extends IPSModule {
                     if  ($hook['Hook'] == $find_Hook) {
                         $correct_hook_installed = true;
                         $hooks[$index]['TargetID'] = $this->InstanceID;
-                        IPS_LogMessage("HIKMOD","Webhook bereits mit Instanz verbunden und korrekter Webhook Name");
+                        IPS_LogMessage("HIKMOD","Webhook bereits mit der Instanz verbunden und hat den korrekten Namen");
                         break;
                     }
                     else{
                         $correct_hook_with_wrong_name_installed = true; 
                         $hooks[$index]['TargetID'] = $this->InstanceID;
-                        IPS_LogMessage("HIKMOD","Webhook bereits mit Instanz verbunden und neuer Name wird eingetragen");
+                        IPS_LogMessage("HIKMOD","Webhook bereits mit Instanz verbunden aber der  neue Name muss eingetragen werden");
                         break;                 
                     }
                 }
             }
             if ($correct_hook_with_wrong_name_installed) {
-                    IPS_LogMessage("HIKMOD","Korrekter Webhook mit falschem Namen installiert");
+                    IPS_LogMessage("HIKMOD","Webhook  Name wird jetzt korrigiert");
                     $hooks[$index] = ['Hook' => $WebHook, 'TargetID' => $this->InstanceID];
                     IPS_SetProperty($ids[0], 'Hooks', json_encode($hooks));
                     IPS_ApplyChanges($ids[0]);
             }  
             if(!$hook_connected_to_script ){
-                IPS_LogMessage("HIKMOD","Kein  Webhook für die Instanz installiert");
+                IPS_LogMessage("HIKMOD","Neuer Webhook wird jetzt für die Instanz installiert und verbunden");
                 $hooks[] = ['Hook' => $WebHook, 'TargetID' => $this->InstanceID];
                 IPS_SetProperty($ids[0], 'Hooks', json_encode($hooks));
                 IPS_ApplyChanges($ids[0]);
