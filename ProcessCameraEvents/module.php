@@ -93,13 +93,19 @@ class ProcessCameraEvents extends IPSModule {
             } elseif (is_array($_POST)) {
                 IPS_LogMessage("HIKMOD","Webhook has delivered Post Data");
                 IPS_LogMessage("HIKMOD","Array ".implode(" ",$_POST));
-                if($_POST[0] == "") IPS_LogMessage("HIKMOD","Empty");
-                foreach ($_POST as $value => $content) {
-                    IPS_LogMessage("HIKMOD",$value."  ".$content);
-                    $motionData = $this->parseEventNotificationAlert($value);
-                    $this->handleMotionData($motionData);
+                if($_POST[0] == "") {
+                    IPS_LogMessage("HIKMOD","Message Empty");
                 }
-            } else {
+                else{
+
+                    foreach ($_POST as $value => $content) {
+                        IPS_LogMessage("HIKMOD",$value."  ".$content);
+                        $motionData = $this->parseEventNotificationAlert($value);
+                        $this->handleMotionData($motionData);
+                    }
+                }
+            } 
+            else {
                 IPS_LogMessage("HIKMOD","No Data");
             }
             IPS_LogMessage("HIKMOD","=======================END of Script Webhook Processing============================");         
