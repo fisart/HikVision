@@ -89,7 +89,7 @@ class ProcessCameraEvents extends IPSModule {
                 if (is_array($motionData)) {
                     IPS_LogMessage("HIKMOD","Motion Data is Array");
                     IPS_LogMessage("HIKMOD","Array ".implode(" ",$motionData));
-                    $this->handleMotionData($motionData);
+                    $this->handleMotionData($motionData,"File Data");
                 }
             } elseif (is_array($_POST)) {
                 IPS_LogMessage("HIKMOD","Webhook has delivered Post Data");
@@ -106,7 +106,7 @@ class ProcessCameraEvents extends IPSModule {
                         if(array_key_exists('channelName',$motionData)){ 
                             if($motionData['channelName'] != "")
                             { 
-                                $this->handleMotionData($motionData);
+                                $this->handleMotionData($motionData, "Post Data");
                             }
                             else{
                                 IPS_LogMessage("HIKMOD","Array Key Channel Name is empty");
@@ -124,7 +124,7 @@ class ProcessCameraEvents extends IPSModule {
             IPS_LogMessage("HIKMOD","=======================END of Script Webhook Processing============================");         
     }
 
-    private function handleMotionData($motionData) {
+    private function handleMotionData($motionData,$source) {
         IPS_LogMessage("HIKMOD","--------------------------------Start of Script Motion Data -------------------");
         $notSetYet = 'NotSet';
         $parent = $this->InstanceID;
@@ -138,12 +138,12 @@ class ProcessCameraEvents extends IPSModule {
 
         if (IPS_SemaphoreEnter($kamera_name."process",1000)) 
         {
-            IPS_LogMessage("HIKMOD","Semaphore process wurde betreten  ".$kamera_name);
+            IPS_LogMessage("HIKMOD".$source,"Semaphore process wurde betreten  ".$kamera_name);
             SetValueBoolean($kameraId, true);
             $delay_still_active  = false;
             $eggTimerId = @IPS_GetObjectIDByName("Egg Timer", $kameraId);
             if ($eggTimerId) {
-                IPS_LogMessage("HIKMOD","Check 1 : Der Egg Timer existiert bereits und wird auf Aktiv gesetzt  ".$kameraId);
+                IPS_LogMessage("HIKMOD".$source,"Check 1 : Der Egg Timer existiert bereits und wird auf Aktiv gesetzt  ".$kameraId);
                 $activ_id = @IPS_GetObjectIDByName("Aktiv",  $eggTimerId );
                 $delay_still_active = GetValueBoolean($activ_id );
             }
@@ -163,18 +163,18 @@ class ProcessCameraEvents extends IPSModule {
                     sleep(2);
                     $this->manageMedia($kameraId, "Last_Picture", $savePath);
                 } else {
-                    IPS_LogMessage("HIKMOD", "Please set UserName and Password in Variable");
+                    IPS_LogMessage("HIKMOD".$source, "Please set UserName and Password in Variable");
                 }
                 if (IPS_SemaphoreEnter($kamera_name,1000)) 
                 {
-                    IPS_LogMessage("HIKMOD","Semaphore gesetzt um zu verhindern das mehrere Egg Timer installiert werden   ".$kamera_name );
+                    IPS_LogMessage("HIKMOD".$source,"Semaphore gesetzt um zu verhindern das mehrere Egg Timer installiert werden   ".$kamera_name );
                     $eggTimerId = @IPS_GetObjectIDByName("Egg Timer", $kameraId);
                     if ($eggTimerId) {
-                        IPS_LogMessage("HIKMOD","Check 2 : Egg Timer existiert und wird auf Aktiv gesetzt   ".$kameraId);
+                        IPS_LogMessage("HIKMOD".$source,"Check 2 : Egg Timer existiert und wird auf Aktiv gesetzt   ".$kameraId);
                         SetValueInteger(IPS_GetObjectIDByName("Zeit in Sekunden", $eggTimerId), $motion_active);
                         RequestAction(IPS_GetObjectIDByName("Aktiv", $eggTimerId), true);
                     } else {
-                        IPS_LogMessage("HIKMOD","Egg Timer existiert NICHT und wird installiert  ".$kameraId);
+                        IPS_LogMessage("HIKMOD".$source,"Egg Timer existiert NICHT und wird installiert  ".$kameraId);
                         $insId = IPS_CreateInstance($this->ReadPropertyString('EggTimerModuleId'));
                         IPS_SetName($insId, "Egg Timer");
                         IPS_SetParent($insId, $kameraId);
@@ -187,27 +187,27 @@ class ProcessCameraEvents extends IPSModule {
                         IPS_SetEventAction($eid, "{75C67945-BE11-5965-C569-602D43F84269}", ["VALUE" => false]);
                         IPS_SetEventActive($eid, true);
                         IPS_SetEventTriggerValue($eid, false);
-                        IPS_LogMessage("HIKMOD","Event wurde installiert Event ID ".$eid." Egg Timer ID ".$insId);
+                        IPS_LogMessage("HIKMOD".$source,"Event wurde installiert Event ID ".$eid." Egg Timer ID ".$insId);
                     }
                     IPS_SemaphoreLeave($kamera_name );
                 }
                 else
                 {
-                    IPS_LogMessage("HIKMOD","Es wird bereits ein Egg Timer installiert Semaphore war gesetzt ".$kamera_name );
+                    IPS_LogMessage("HIKMOD".$source,"Es wird bereits ein Egg Timer installiert Semaphore war gesetzt ".$kamera_name );
                 }  
             }
             else
             {
-                IPS_LogMessage("HIKMOD","Do nothing, the Egg Timer is still active ".$kamera_name );
+                IPS_LogMessage("HIKMOD".$source,"Do nothing, the Egg Timer is still active ".$kamera_name );
             } 
-            IPS_LogMessage("HIKMOD","Leave process Semaphore  ".$kamera_name );
+            IPS_LogMessage("HIKMOD".$source,"Leave process Semaphore  ".$kamera_name );
             IPS_SemaphoreLeave($kamera_name ."process");
         }
         else
         {
-            IPS_LogMessage("HIKMOD"," Semaphore Active. No execution for this Data ".$kamera_name );
+            IPS_LogMessage("HIKMOD".$source," Semaphore Active. No execution for this Data ".$kamera_name );
         }  
-        IPS_LogMessage("HIKMOD","--------------------------------End of Script Motion Data -------------------".$kamera_name );
+        IPS_LogMessage("HIKMOD".$source,"--------------------------------End of Script Motion Data -------------------".$kamera_name );
     }
 
     private function parseEventNotificationAlert($xmlString) {
