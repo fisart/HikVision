@@ -121,10 +121,12 @@ class ProcessCameraEvents extends IPSModule {
         $username = $this->ReadPropertyString('UserName');
         $password= $this->ReadPropertyString('Password');
         $motion_active = $this->ReadPropertyInteger('MotionActive');
-        $kameraId = $this->manageVariable($parent, $motionData['channelName'], 0, 'Motion', true, 0, "");
-        if (IPS_SemaphoreEnter($kameraId."process",1000)) 
+        $kamera_name = $motionData['channelName'];
+        $kameraId = $this->manageVariable($parent, $kamera_name , 0, 'Motion', true, 0, "");
+
+        if (IPS_SemaphoreEnter($kamera_name."process",1000)) 
         {
-            IPS_LogMessage("HIKMOD","Semaphore process wurde betreten  ".$kameraId);
+            IPS_LogMessage("HIKMOD","Semaphore process wurde betreten  ".$kamera_name);
             SetValueBoolean($kameraId, true);
             $delay_still_active  = false;
             $eggTimerId = @IPS_GetObjectIDByName("Egg Timer", $kameraId);
@@ -151,9 +153,9 @@ class ProcessCameraEvents extends IPSModule {
                 } else {
                     IPS_LogMessage("HIKMOD", "Please set UserName and Password in Variable");
                 }
-                if (IPS_SemaphoreEnter($kameraId,1000)) 
+                if (IPS_SemaphoreEnter($kamera_name,1000)) 
                 {
-                    IPS_LogMessage("HIKMOD","Semaphore gesetzt um zu verhindern das mehrere Egg Timer installiert werden   ".$kameraId);
+                    IPS_LogMessage("HIKMOD","Semaphore gesetzt um zu verhindern das mehrere Egg Timer installiert werden   ".$kamera_name );
                     $eggTimerId = @IPS_GetObjectIDByName("Egg Timer", $kameraId);
                     if ($eggTimerId) {
                         IPS_LogMessage("HIKMOD","Check 2 : Egg Timer existiert und wird auf Aktiv gesetzt   ".$kameraId);
@@ -175,25 +177,25 @@ class ProcessCameraEvents extends IPSModule {
                         IPS_SetEventTriggerValue($eid, false);
                         IPS_LogMessage("HIKMOD","Event wurde installiert Event ID ".$eid." Egg Timer ID ".$insId);
                     }
-                    IPS_SemaphoreLeave($kameraId);
+                    IPS_SemaphoreLeave($kamera_name );
                 }
                 else
                 {
-                    IPS_LogMessage("HIKMOD","Es wird bereits ein Egg Timer installiert Semaphore war gesetzt ".$kameraId);
+                    IPS_LogMessage("HIKMOD","Es wird bereits ein Egg Timer installiert Semaphore war gesetzt ".$kamera_name );
                 }  
             }
             else
             {
-                IPS_LogMessage("HIKMOD","Do nothing, the Egg Timer is still active ".$kameraId);
+                IPS_LogMessage("HIKMOD","Do nothing, the Egg Timer is still active ".$kamera_name );
             } 
-            IPS_LogMessage("HIKMOD","Leave process Semaphore  ".$kameraId);
-            IPS_SemaphoreLeave($kameraId."process");
+            IPS_LogMessage("HIKMOD","Leave process Semaphore  ".$kamera_name );
+            IPS_SemaphoreLeave($kamera_name ."process");
         }
         else
         {
-            IPS_LogMessage("HIKMOD"," Semaphore Active. No execution for this Data ".$kameraId);
+            IPS_LogMessage("HIKMOD"," Semaphore Active. No execution for this Data ".$kamera_name );
         }  
-        IPS_LogMessage("HIKMOD","--------------------------------End of Script Motion Data -------------------".$kameraId);
+        IPS_LogMessage("HIKMOD","--------------------------------End of Script Motion Data -------------------".$kamera_name );
     }
 
     private function parseEventNotificationAlert($xmlString) {
