@@ -87,20 +87,23 @@ class ProcessCameraEvents extends IPSModule {
                 IPS_LogMessage("HIKMOD","Webhook has delivered File Data");
                 $motionData = $this->parseEventNotificationAlert($webhookData);
                 if (is_array($motionData)) {
-                    IPS_LogMessage("HIKMOD","Motion Data is Array");
-                    IPS_LogMessage("HIKMOD","Array ".implode(" ",$motionData));
-                    $this->handleMotionData($motionData,"File Data");
+                    //IPS_LogMessage("HIKMOD","Motion Data is Array");
+                    //IPS_LogMessage("HIKMOD","Array ".implode(" ",$motionData));
+                    //$this->handleMotionData($motionData,"File Data");
                 }
             } elseif (is_array($_POST)) {
                 IPS_LogMessage("HIKMOD"."Post Data","Webhook has delivered Post Data");
                 IPS_LogMessage("HIKMOD"."Post Data","Array ".implode(" ",$_POST));
                 SetValueString(51395,implode(" ",$_POST));
+                $motionData = $this->parseEventNotificationAlert($_POST);
+                $this->handleMotionData($motionData, "Post Data");
+                /*
                 foreach ($_POST as $value => $content) {
                         IPS_LogMessage("HIKMOD"."Post Data","Value : ".$value);
                         IPS_LogMessage("HIKMOD"."Post Data","Content : ".$content);
                         $motionData = $this->parseEventNotificationAlert($content);
                         $this->handleMotionData($motionData, "Post Data");
-                        /*
+                        
                         if(array_key_exists('channelName',$motionData)){ 
                             if($motionData['channelName'] != "")
                             { 
