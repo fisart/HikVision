@@ -87,9 +87,9 @@ class ProcessCameraEvents extends IPSModule {
                 IPS_LogMessage("HIKMOD","Webhook has delivered File Data");
                 $motionData = $this->parseEventNotificationAlert($webhookData);
                 if (is_array($motionData)) {
-                    //IPS_LogMessage("HIKMOD","Motion Data is Array");
-                    //IPS_LogMessage("HIKMOD","Array ".implode(" ",$motionData));
-                    //$this->handleMotionData($motionData,"File Data");
+                    IPS_LogMessage("HIKMOD","Motion Data is Array");
+                    IPS_LogMessage("HIKMOD","Array ".implode(" ",$motionData));
+                    $this->handleMotionData($motionData,"File Data");
                 }
             } elseif (is_array($_POST)) {
                 IPS_LogMessage("HIKMOD"."Post Data","Webhook has delivered Post Data");
@@ -136,7 +136,7 @@ class ProcessCameraEvents extends IPSModule {
         $kamera_name = $motionData['channelName'];
         $kameraId = $this->manageVariable($parent, $kamera_name , 0, 'Motion', true, 0, "");
 
-        if (IPS_SemaphoreEnter($kamera_name."process",1000)) 
+        if (IPS_SemaphoreEnter($kamera_name."process",5000)) 
         {
             IPS_LogMessage("HIKMOD".$source,"Semaphore process wurde betreten  ".$kamera_name);
             SetValueBoolean($kameraId, true);
