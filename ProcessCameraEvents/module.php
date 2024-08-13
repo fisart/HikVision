@@ -12,6 +12,7 @@ class ProcessCameraEvents extends IPSModule {
         $this->RegisterPropertyString('UserName', 'NotSet');
         $this->RegisterPropertyString('Password', 'NotSet');
         $this->RegisterPropertyInteger('MotionActive', '30');
+        $this->RegisterPropertyBoolean('debug', false);
         $this->RegisterPropertyString('EggTimerModuleId', '{17843F0A-BFC8-A4BA-E219-A2D10FC8E5BE}');
         
         // Ensure the webhook is registered

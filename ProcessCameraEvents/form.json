@@ -67,7 +67,8 @@
       "minimum": 0,
       "maximum": 1000,
       "default": 30
-    }
+    },
+    { "type": "CheckBox", "name": "debug", "caption": "Debug Messages" }
   ],
   "actions": [],
   "status": [
