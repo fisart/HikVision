@@ -94,7 +94,7 @@ class ProcessCameraEvents extends IPSModule {
             } elseif (is_array($_POST)) {
                 IPS_LogMessage("HIKMOD"."Post Data","Webhook has delivered Post Data");
                 IPS_LogMessage("HIKMOD"."Post Data","Array ".implode(" ",$_POST));
-                SetValueString(51395,implode(" ",$_POST)):
+                SetValueString(51395,implode(" ",$_POST));
                 if(implode(" ",$_POST)  == "") {
                     IPS_LogMessage("HIKMOD"."Post Data","Message Empty");
                 }
