@@ -142,7 +142,7 @@ class ProcessCameraEvents extends IPSModule {
             SetValueBoolean($kameraId, true);
 
             $kamera_IP_var_id = $this->manageVariable($kameraId, $motionData['ipAddress'], 3, '~TextBox', true, 0, "");      
-
+/*
             if(IPS_GetInstanceIDByName ($motionData['ipAddress'], $kamera_IP_var_id) ){ 
                 $kamera_IP_var_id = IPS_GetInstanceIDByName ($motionData['ipAddress'], parent);
             }
@@ -154,10 +154,10 @@ class ProcessCameraEvents extends IPSModule {
                 IPS_ApplyChanges($InsID); 
                 $kamera_IP_var_id = $InsID;
             }
+*/
 
 
-
-            //SetValueString($kamera_IP_var_id, $motionData['eventDescription']);
+            SetValueString($kamera_IP_var_id, $motionData['eventDescription']);
 
             $username = GetValueString($this->manageVariable($kameraId, "User Name", 3, '~TextBox', true, 0, $username));
             $password = GetValueString($this->manageVariable($kameraId, "Password", 3, '~TextBox', true, 0, $password ));
