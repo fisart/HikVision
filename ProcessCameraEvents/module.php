@@ -75,8 +75,8 @@ class ProcessCameraEvents extends IPSModule {
 
     public function  ProcessHookData() {
         
-   
-            //IPS_LogMessage("HIKMOD","=======================Start of Script Webhook Processing============================");         
+            $debug = $this->ReadPropertyBoolean('debug');
+            if($debug) IPS_LogMessage("HIKMOD","=======================Start of Script Webhook Processing============================");         
             $eggTimerModuleId = $this->ReadPropertyString('EggTimerModuleId');
             if (!IPS_GetModule($eggTimerModuleId)) {
                 //IPS_LogMessage("HIKMOD","Bitte erst das Egg Timer Modul aus dem Modul Store installieren");
@@ -132,6 +132,7 @@ class ProcessCameraEvents extends IPSModule {
         $savePath = $this->ReadPropertyString('SavePath');
         $username = $this->ReadPropertyString('UserName');
         $password= $this->ReadPropertyString('Password');
+        $debug = $this->ReadPropertyBoolean('debug');
         $kamera_name = $motionData['channelName'];
 
 
@@ -184,6 +185,7 @@ class ProcessCameraEvents extends IPSModule {
 
     private function handle_egg_timer($source,$kamera_name,$kameraId){ 
         $motion_active = $this->ReadPropertyInteger('MotionActive');
+        $debug = $this->ReadPropertyBoolean('debug');
         if (IPS_SemaphoreEnter($kamera_name,1000)) 
         {
             //IPS_LogMessage("HIKMOD".$source,"Semaphore gesetzt um zu verhindern das mehrere Egg Timer installiert werden   ".$kamera_name );
