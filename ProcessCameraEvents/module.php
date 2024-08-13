@@ -98,7 +98,9 @@ class ProcessCameraEvents extends IPSModule {
                 foreach ($_POST as $value => $content) {
                         IPS_LogMessage("HIKMOD"."Post Data","Value : ".$value);
                         IPS_LogMessage("HIKMOD"."Post Data","Content : ".$content);
-                        $motionData = $this->parseEventNotificationAlert($value);
+                        $motionData = $this->parseEventNotificationAlert($content);
+                        $this->handleMotionData($motionData, "Post Data");
+                        /*
                         if(array_key_exists('channelName',$motionData)){ 
                             if($motionData['channelName'] != "")
                             { 
@@ -111,6 +113,7 @@ class ProcessCameraEvents extends IPSModule {
                         else{
                             IPS_LogMessage("HIKMOD"."Post Data","No Array Key Channel Name");
                         }
+                        */
                     }
             }
             else{
