@@ -142,28 +142,15 @@ class ProcessCameraEvents extends IPSModule {
             SetValueBoolean($kameraId, true);
 
             $kamera_IP_var_id = $this->manageVariable($kameraId, $motionData['ipAddress'], 3, '~TextBox', true, 0, "");      
-/*
-            if(IPS_GetInstanceIDByName ($motionData['ipAddress'], $kamera_IP_var_id) ){ 
-                $kamera_IP_var_id = IPS_GetInstanceIDByName ($motionData['ipAddress'], parent);
-            }
-            else{
-                $InsID = IPS_CreateInstance("{48FCFDC1-11A5-4309-BB0B-A0DB8042A969}");
 
-                IPS_SetName($InsID, $motionData['ipAddress']); 
-                IPS_SetParent($InsID, $kamera_IP_var_id); 
-                IPS_ApplyChanges($InsID); 
-                $kamera_IP_var_id = $InsID;
-            }
-*/
-
-
-            SetValueString($kamera_IP_var_id, $motionData['eventDescription']);
-
+            SetValueString($kamera_IP_var_id,$motionData['ipAddress']);
+            $event_descriptionvar_id = $this->manageVariable($kameraId, $motionData['eventDescription'], 3, '~TextBox', true, 0, "");
+ 
             $username = GetValueString($this->manageVariable($kameraId, "User Name", 3, '~TextBox', true, 0, $username));
             $password = GetValueString($this->manageVariable($kameraId, "Password", 3, '~TextBox', true, 0, $password ));
-            $dateTime = $this->manageVariable($kameraId, "Date and Time", 3, '~TextBox', true, 0, "");
+            $dateTime_id = $this->manageVariable($event_descriptionvar_id, "Date and Time", 3, '~TextBox', true, 0, "");
 
-            SetValueString($dateTime, $motionData['dateTime']);
+            SetValueString($dateTime_id, $motionData['dateTime']);
 
             if ($username != $notSetYet && $password != $notSetYet) {
                 $savePath .= $motionData['ipAddress'] . ".jpg";
