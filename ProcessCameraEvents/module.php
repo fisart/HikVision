@@ -132,19 +132,37 @@ class ProcessCameraEvents extends IPSModule {
         $username = $this->ReadPropertyString('UserName');
         $password= $this->ReadPropertyString('Password');
         $kamera_name = $motionData['channelName'];
-        $kameraId = $this->manageVariable($parent, $kamera_name , 0, 'Motion', true, 0, "");
+        $guid_dummy = '{485D0419-BE97-4548-AA9C-C083EB82E61E}';
 
         if (IPS_SemaphoreEnter($kamera_name."process",5000)) 
         {
             IPS_LogMessage("HIKMOD".$source,"Semaphore process wurde betreten  ".$kamera_name);
+
+            $kameraId = $this->manageVariable($parent, $kamera_name , 0, 'Motion', true, 0, ""); 
             SetValueBoolean($kameraId, true);
+
+            if(IPS_GetInstanceIDByName ($motionData['ipAddress'], $parent) ){ 
+                $kamera_IP_var_id = IPS_GetInstanceIDByName ($motionData['ipAddress'], parent);
+            }
+            else{
+                $InsID = IPS_CreateInstance("{48FCFDC1-11A5-4309-BB0B-A0DB8042A969}");
+
+                IPS_SetName($InsID, $motionData['ipAddress']); 
+                IPS_SetParent($InsID, $parent); 
+                IPS_ApplyChanges($InsID); 
+                $kamera_IP_var_id = $InsID;
+            }
+
             $kamera_IP_var_id = $this->manageVariable($kameraId, $motionData['ipAddress'], 3, '~TextBox', true, 0, "");
+
             SetValueString($kamera_IP_var_id, $motionData['eventDescription']);
 
             $username = GetValueString($this->manageVariable($kameraId, "User Name", 3, '~TextBox', true, 0, $username));
             $password = GetValueString($this->manageVariable($kameraId, "Password", 3, '~TextBox', true, 0, $password ));
             $dateTime = $this->manageVariable($kameraId, "Date and Time", 3, '~TextBox', true, 0, "");
+
             SetValueString($dateTime, $motionData['dateTime']);
+
             if ($username != $notSetYet && $password != $notSetYet) {
                 $savePath .= $motionData['ipAddress'] . ".jpg";
                 $this->downloadHikvisionSnapshot($motionData['ipAddress'], $channelId, $username, $password, $savePath);
