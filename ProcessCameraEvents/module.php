@@ -92,16 +92,17 @@ class ProcessCameraEvents extends IPSModule {
                     $this->handleMotionData($motionData,"File Data");
                 }
             } elseif (is_array($_POST)) {
-                IPS_LogMessage("HIKMOD","Webhook has delivered Post Data");
-                IPS_LogMessage("HIKMOD","Array ".implode(" ",$_POST));
+                IPS_LogMessage("HIKMOD"."Post Data","Webhook has delivered Post Data");
+                IPS_LogMessage("HIKMOD"."Post Data","Array ".implode(" ",$_POST));
+                SetValueString(51395,implode(" ",$_POST)):
                 if(implode(" ",$_POST)  == "") {
-                    IPS_LogMessage("HIKMOD","Message Empty");
+                    IPS_LogMessage("HIKMOD"."Post Data","Message Empty");
                 }
                 else{
 
                     foreach ($_POST as $value => $content) {
-                        IPS_LogMessage("HIKMOD_A","Value : ".$value);
-                        IPS_LogMessage("HIKMOD_B","Content : ".$content);
+                        IPS_LogMessage("HIKMOD"."Post Data","Value : ".$value);
+                        IPS_LogMessage("HIKMOD"."Post Data","Content : ".$content);
                         $motionData = $this->parseEventNotificationAlert($value);
                         if(array_key_exists('channelName',$motionData)){ 
                             if($motionData['channelName'] != "")
@@ -109,11 +110,11 @@ class ProcessCameraEvents extends IPSModule {
                                 $this->handleMotionData($motionData, "Post Data");
                             }
                             else{
-                                IPS_LogMessage("HIKMOD","Array Key Channel Name is empty");
+                                IPS_LogMessage("HIKMOD"."Post Data","Array Key Channel Name is empty");
                             }
                         }
                         else{
-                            IPS_LogMessage("HIKMOD","No Array Key Channel Name");
+                            IPS_LogMessage("HIKMOD"."Post Data","No Array Key Channel Name");
                         }
                     }
                 }
@@ -125,7 +126,7 @@ class ProcessCameraEvents extends IPSModule {
     }
 
     private function handleMotionData($motionData,$source) {
-        IPS_LogMessage("HIKMOD","--------------------------------Start of Script Motion Data -------------------");
+        IPS_LogMessage("HIKMOD".$source,$source."--------------------------------Start of Script Motion Data -------------------");
         $notSetYet = 'NotSet';
         $parent = $this->InstanceID;
         $channelId = $this->ReadPropertyString('ChannelId');
@@ -207,7 +208,7 @@ class ProcessCameraEvents extends IPSModule {
         {
             IPS_LogMessage("HIKMOD".$source," Semaphore Active. No execution for this Data ".$kamera_name );
         }  
-        IPS_LogMessage("HIKMOD".$source,"--------------------------------End of Script Motion Data -------------------".$kamera_name );
+        IPS_LogMessage("HIKMOD".$source,$source."--------------------------------End of Script Motion Data -------------------".$kamera_name );
     }
 
     private function parseEventNotificationAlert($xmlString) {
