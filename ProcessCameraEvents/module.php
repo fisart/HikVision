@@ -154,10 +154,10 @@ class ProcessCameraEvents extends IPSModule {
                 IPS_LogMessage("HIKMOD".$source, "Please set UserName and Password in Variable");
             }
 
-            handle_egg_timer($source,$kamera_name,$kameraId);
+            $this->handle_egg_timer($source,$kamera_name,$kameraId);
 
             IPS_LogMessage("HIKMOD".$source,"Leave process Semaphore  ".$kamera_name );
-            IPS_SemaphoreLeave($kamera_name ."process");
+            IPS_SemaphoreLeave($kamera_name."process");
         }
         else
         {
