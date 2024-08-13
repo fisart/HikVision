@@ -95,9 +95,7 @@ class ProcessCameraEvents extends IPSModule {
                 IPS_LogMessage("HIKMOD"."Post Data","Webhook has delivered Post Data");
                 IPS_LogMessage("HIKMOD"."Post Data","Array ".implode(" ",$_POST));
                 SetValueString(51395,implode(" ",$_POST));
-                $motionData = $this->parseEventNotificationAlert($_POST);
-                $this->handleMotionData($motionData, "Post Data");
-                /*
+                
                 foreach ($_POST as $value => $content) {
                         IPS_LogMessage("HIKMOD"."Post Data","Value : ".$value);
                         IPS_LogMessage("HIKMOD"."Post Data","Content : ".$content);
@@ -118,7 +116,7 @@ class ProcessCameraEvents extends IPSModule {
                         }
                         
                     }
-                    */
+                    
             }
             else{
                 IPS_LogMessage("HIKMOD","Error Not expected Webhook Data");
