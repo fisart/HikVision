@@ -112,7 +112,7 @@ class ProcessCameraEvents extends IPSModule {
                             }
                         }
                         else{
-                            Iif($debug) IPS_LogMessage("HIKMOD"."Post Data","No Array Key Channel Name");
+                            if($debug) IPS_LogMessage("HIKMOD"."Post Data","No Array Key Channel Name");
                         }
                         
                     }
