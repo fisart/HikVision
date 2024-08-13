@@ -147,8 +147,8 @@ class ProcessCameraEvents extends IPSModule {
                 $activ_id = @IPS_GetObjectIDByName("Aktiv",  $eggTimerId );
                 $delay_still_active = GetValueBoolean($activ_id );
             }
-            if(!$delay_still_active) // Entweder der Egg Timer existiert nicht oder er ist inaktiv
-            { 
+            //if(!$delay_still_active) // Entweder der Egg Timer existiert nicht oder er ist inaktiv
+            //{ 
                 $kamera_IP_var_id = $this->manageVariable($kameraId, $motionData['ipAddress'], 3, '~TextBox', true, 0, "");
 
                 SetValueString($kamera_IP_var_id, $motionData['eventDescription']);
@@ -195,11 +195,11 @@ class ProcessCameraEvents extends IPSModule {
                 {
                     IPS_LogMessage("HIKMOD".$source,"Es wird bereits ein Egg Timer installiert Semaphore war gesetzt ".$kamera_name );
                 }  
-            }
-            else
-            {
-                IPS_LogMessage("HIKMOD".$source,"Do nothing, the Egg Timer is still active ".$kamera_name );
-            } 
+            //}
+            //else
+            //{
+              //  IPS_LogMessage("HIKMOD".$source,"Do nothing, the Egg Timer is still active ".$kamera_name );
+            //} 
             IPS_LogMessage("HIKMOD".$source,"Leave process Semaphore  ".$kamera_name );
             IPS_SemaphoreLeave($kamera_name ."process");
         }
