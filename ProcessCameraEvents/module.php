@@ -147,7 +147,6 @@ class ProcessCameraEvents extends IPSModule {
             if ($username != $notSetYet && $password != $notSetYet) {
                 $savePath .= $motionData['eventDescription'].$motionData['ipAddress'] . ".jpg";
                 $this->downloadHikvisionSnapshot($motionData['ipAddress'], $channelId, $username, $password, $savePath);
-                sleep(2);
                 $this->manageMedia($event_descriptionvar_id, $motionData['eventDescription']."Last_Picture", $savePath);
             } else {
                 //IPS_LogMessage("HIKMOD".$source, "Please set UserName and Password in Variable");
