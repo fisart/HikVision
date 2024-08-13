@@ -94,7 +94,6 @@ class ProcessCameraEvents extends IPSModule {
             } elseif (is_array($_POST)) {
                 IPS_LogMessage("HIKMOD"."Post Data","Webhook has delivered Post Data");
                 IPS_LogMessage("HIKMOD"."Post Data","Array ".implode(" ",$_POST));
-                SetValueString(51395,implode(" ",$_POST));
                 
                 foreach ($_POST as $value => $content) {
                         IPS_LogMessage("HIKMOD"."Post Data","Value : ".$value);
@@ -140,7 +139,7 @@ class ProcessCameraEvents extends IPSModule {
         {
             IPS_LogMessage("HIKMOD".$source,"Semaphore process wurde betreten  ".$kamera_name);
             SetValueBoolean($kameraId, true);
-            
+
             $eggTimerId = @IPS_GetObjectIDByName("Egg Timer", $kameraId);
             if ($eggTimerId) {
                 IPS_LogMessage("HIKMOD".$source,"Check 1 : Der Egg Timer existiert bereits und wird auf Aktiv gesetzt  ".$kameraId);
