@@ -313,42 +313,48 @@ class ProcessCameraEvents extends IPSModule {
     public function Destroy() {
         parent::Destroy();
         // Add your custom code here
-        IPS_LogMessage("HIKMOD","Destroy existing HIKVISION Webhook Called");
-        $ids = IPS_GetInstanceListByModuleID('{015A6EB8-D6E5-4B93-B496-0D3F77AE9FE1}');
-        if (count($ids) > 0) {
-            IPS_LogMessage("HIKMOD","Webhooks vorhanden");
-            $hooks = json_decode(IPS_GetProperty($ids[0], 'Hooks'), true);
-            $correct_hook_found = false;
-            foreach ($hooks as $index => $hook) {
-                IPS_LogMessage("HIKMOD",implode(" ",$hook));
-                if  (!@IPS_GetObject($hooks[$index]['TargetID'] )) {
-                $correct_hook_found = true;
-                break;
-                }              
+
+        if (!IPS_InstanceExists($this->InstanceID)) 
+        { 
+            IPS_LogMessage("HIKMOD","Destroy existing HIKVISION Webhook Called");
+            $ids = IPS_GetInstanceListByModuleID('{015A6EB8-D6E5-4B93-B496-0D3F77AE9FE1}');
+            if (count($ids) > 0) {
+                IPS_LogMessage("HIKMOD","Webhooks vorhanden");
+                $hooks = json_decode(IPS_GetProperty($ids[0], 'Hooks'), true);
+                $correct_hook_found = false;
+                foreach ($hooks as $index => $hook) {
+                    if ($hook['TargetID'] == $this->InstanceID) { 
+                        IPS_LogMessage("HIKMOD",implode(" ",$hook));
+                        $correct_hook_found = true;
+                        break;
+                    }                 
+                }
+                if ( $correct_hook_found  ) {
+                    IPS_LogMessage("HIKMOD","Webhook wird jetzt gelöscht");
+        
+                    // Remove the specific webhook from the hooks array
+                    unset($hooks[$index]);
+                
+                    // Re-index the array to prevent gaps in the keys
+                    $hooks = array_values($hooks);
+                
+                    // Update the hooks property with the modified array
+                    IPS_SetProperty($ids[0], 'Hooks', json_encode($hooks));
+                    IPS_ApplyChanges($ids[0]);
+                }  
+                else
+                {
+                    IPS_LogMessage("HIKMOD","Webhook not found ");
+                }
             }
-            if ( $correct_hook_found  ) {
-                IPS_LogMessage("HIKMOD","Webhook wird jetzt gelöscht");
-    
-                // Remove the specific webhook from the hooks array
-                unset($hooks[$index]);
-            
-                // Re-index the array to prevent gaps in the keys
-                $hooks = array_values($hooks);
-            
-                // Update the hooks property with the modified array
-                IPS_SetProperty($ids[0], 'Hooks', json_encode($hooks));
-                IPS_ApplyChanges($ids[0]);
-            }  
-            else
-            {
-                IPS_LogMessage("HIKMOD","Webhook not found ");
+            else{
+                IPS_LogMessage("HIKMOD","Keine Webhooks vorhanden");
             }
+            // Call the parent destroy to ensure the instance is properly destroyed
         }
         else{
-            IPS_LogMessage("HIKMOD","Keine Webhooks vorhanden");
+            IPS_LogMessage("HIKMOD","Instanz wurde nicht gelöscht daher bleibt der Webhook bestehen");            
         }
-        // Call the parent destroy to ensure the instance is properly destroyed
-
     }
 
 
