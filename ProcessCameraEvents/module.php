@@ -194,44 +194,7 @@ class ProcessCameraEvents extends IPSModule {
         return $array;
     }
 
-    private function handle_egg_timer_alt($source,$kamera_name,$kameraId){ 
-        $motion_active = $this->ReadPropertyInteger('MotionActive');
-        $debug = $this->ReadPropertyBoolean('debug');
-
-
-        if (IPS_SemaphoreEnter($kamera_name."EggTimer",1000)) 
-        {
-            if($debug) IPS_LogMessage("HIKMOD".$source,"Semaphore gesetzt um zu verhindern das mehrere Egg Timer installiert werden   ".$kamera_name );
-            $eggTimerId = @IPS_GetObjectIDByName("Egg Timer", $kameraId);
-            if ($eggTimerId) {
-                if($debug) IPS_LogMessage("HIKMOD".$source,"Check 1 : Der Egg Timer existiert bereits und wird auf Aktiv gesetzt  ".$kameraId);
-                $activ_id = @IPS_GetObjectIDByName("Aktiv",  $eggTimerId );
-                if($debug) IPS_LogMessage("HIKMOD".$source,"Check 2 : Egg Timer existiert und wird auf Aktiv gesetzt   ".$kameraId);
-                SetValueInteger(IPS_GetObjectIDByName("Zeit in Sekunden", $eggTimerId), $motion_active);
-                RequestAction(IPS_GetObjectIDByName("Aktiv", $eggTimerId), true);
-            } else {
-                if($debug) IPS_LogMessage("HIKMOD".$source,"Egg Timer existiert NICHT und wird installiert  ".$kameraId);
-                $insId = IPS_CreateInstance($this->ReadAttributeString('EggTimerModuleId'));
-                IPS_SetName($insId, "Egg Timer");
-                IPS_SetParent($insId, $kameraId);
-                IPS_ApplyChanges($insId);
-                RequestAction(IPS_GetObjectIDByName("Aktiv", $insId), true);
-                SetValueInteger(IPS_GetObjectIDByName("Zeit in Sekunden", $insId), $motion_active);
-                $eid = IPS_CreateEvent(0);
-                IPS_SetEventTrigger($eid, 4, IPS_GetObjectIDByName("Aktiv", $insId));
-                IPS_SetParent($eid, $kameraId);
-                IPS_SetEventAction($eid, "{75C67945-BE11-5965-C569-602D43F84269}", ["VALUE" => false]);
-                IPS_SetEventActive($eid, true);
-                IPS_SetEventTriggerValue($eid, false);
-                if($debug) IPS_LogMessage("HIKMOD".$source,"Event wurde installiert Event ID ".$eid." Egg Timer ID ".$insId);
-            }
-            IPS_SemaphoreLeave($kamera_name."EggTimer" );
-        }
-        else
-        {
-            if($debug) IPS_LogMessage("HIKMOD".$source,"Es wird bereits ein Egg Timer installiert Semaphore war gesetzt ".$kamera_name );
-        }  
-    }
+    
 
 
     private function handle_egg_timer($source,$kamera_name,$kameraId){ 
@@ -240,16 +203,15 @@ class ProcessCameraEvents extends IPSModule {
         $active = $this->Translate('Active');
         $time_in_seconds = $this->Translate('Time in Seconds');
         $semaphore_egg_timer_name = $kamera_name."EggTimer1";
-        if($debug) IPS_LogMessage("HIKMOD".$source,"Localiced Names : ".$active ."   ".$time_in_seconds );
+        if($debug) IPS_LogMessage("HIKMOD".$source,"Lokalisierte Variablen Namen des Egg Timers. Status : ".$active ."  Zeitdauer : ".$time_in_seconds );
 
         if (IPS_SemaphoreEnter($semaphore_egg_timer_name,1000)) 
         {
             if($debug) IPS_LogMessage("HIKMOD".$source,"Habe Semaphore gesetzt um zu verhindern das mehrere Egg Timer installiert werden   ".$semaphore_egg_timer_name );
             $eggTimerId = @IPS_GetObjectIDByName("Egg Timer", $kameraId);
             if ($eggTimerId) {
-                if($debug) IPS_LogMessage("HIKMOD".$source,"Check 1 : Der Egg Timer existiert bereits und wird auf Aktiv gesetzt  ".$kameraId);
+                if($debug) IPS_LogMessage("HIKMOD".$source,"Der Egg Timer existiert bereits und wird aktiviert  ".$kameraId);
                 $activ_id = @IPS_GetObjectIDByName($active,  $eggTimerId );
-                if($debug) IPS_LogMessage("HIKMOD".$source,"Check 2 : Egg Timer existiert und wird auf Aktiv gesetzt   ".$kameraId);
                 SetValueInteger(IPS_GetObjectIDByName($time_in_seconds, $eggTimerId), $motion_active);
                 RequestAction(IPS_GetObjectIDByName($active, $eggTimerId), true);
             } else {
