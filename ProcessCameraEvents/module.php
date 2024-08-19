@@ -143,7 +143,7 @@ class ProcessCameraEvents extends IPSModule {
         $kamera_name = $motionData['channelName'];
 
 
-        if (IPS_SemaphoreEnter($kamera_name."process",10)) 
+        if (IPS_SemaphoreEnter($kamera_name."process1",10)) 
         {
             if($debug) IPS_LogMessage("HIKMOD".$source,"Semaphore process wurde betreten  ".$kamera_name);
 
@@ -170,11 +170,11 @@ class ProcessCameraEvents extends IPSModule {
             $this->handle_egg_timer($source,$kamera_name,$kameraId);
 
             if($debug) IPS_LogMessage("HIKMOD".$source,"Leave process Semaphore  ".$kamera_name );
-            IPS_SemaphoreLeave($kamera_name."process");
+            IPS_SemaphoreLeave($kamera_name."process1");
         }
         else
         {
-            if($debug) IPS_LogMessage("HIKMOD".$source," Semaphore Active. No execution for this Data ".$kamera_name );
+            if($debug) IPS_LogMessage("HIKMOD".$source," Process Semaphore Active. No execution for this Data ".$kamera_name );
         }  
         if($debug) IPS_LogMessage("HIKMOD".$source,$source."--------------------------------End of Script Motion Data -------------------".$kamera_name );
     }
@@ -193,7 +193,7 @@ class ProcessCameraEvents extends IPSModule {
     private function handle_egg_timer_alt($source,$kamera_name,$kameraId){ 
         $motion_active = $this->ReadPropertyInteger('MotionActive');
         $debug = $this->ReadPropertyBoolean('debug');
-        if (IPS_SemaphoreEnter($kamera_name,10)) 
+        if (IPS_SemaphoreEnter($kamera_name."EggTimer",10)) 
         {
             if($debug) IPS_LogMessage("HIKMOD".$source,"Semaphore gesetzt um zu verhindern das mehrere Egg Timer installiert werden   ".$kamera_name );
             $eggTimerId = @IPS_GetObjectIDByName("Egg Timer", $kameraId);
@@ -219,7 +219,7 @@ class ProcessCameraEvents extends IPSModule {
                 IPS_SetEventTriggerValue($eid, false);
                 if($debug) IPS_LogMessage("HIKMOD".$source,"Event wurde installiert Event ID ".$eid." Egg Timer ID ".$insId);
             }
-            IPS_SemaphoreLeave($kamera_name );
+            IPS_SemaphoreLeave($kamera_name."EggTimer" );
         }
         else
         {
