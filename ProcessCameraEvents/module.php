@@ -313,7 +313,6 @@ class ProcessCameraEvents extends IPSModule {
     public function Destroy() {
         parent::Destroy();
         // Add your custom code here
-        $find_Hook = "HIKVISION";
         IPS_LogMessage("HIKMOD","Destroy existing HIKVISION Webhook Called");
         IPS_LogMessage("HIKMOD","Destroy existing HIKVISION Webhook : ");
         $ids = IPS_GetInstanceListByModuleID('{015A6EB8-D6E5-4B93-B496-0D3F77AE9FE1}');
@@ -323,10 +322,8 @@ class ProcessCameraEvents extends IPSModule {
             $correct_hook_found = false;
             foreach ($hooks as $index => $hook) {
                 IPS_LogMessage("HIKMOD",implode(" ",$hook));
-                if  ($hook['Hook'] == $find_Hook) {
+                if  (!IPS_GetObject($hooks[$index]['TargetID'] )) {
                 $correct_hook_found = true;
-                $hooks[$index]['TargetID'] = $this->InstanceID;
-                IPS_LogMessage("HIKMOD","Webhook bereits mit der Instanz verbunden und hat den korrekten Namen");
                 break;
                 }              
             }
