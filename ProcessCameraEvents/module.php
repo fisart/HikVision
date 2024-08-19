@@ -317,7 +317,7 @@ class ProcessCameraEvents extends IPSModule {
         IPS_LogMessage("HIKMOD","Destroy existing HIKVISION Webhook Called");
         $debug = $this->ReadPropertyBoolean('debug');
         $WebHook = $this->ReadPropertyString('WebhookName');
-
+        IPS_LogMessage("HIKMOD","Destroy existing HIKVISION Webhook Called");
         $ids = IPS_GetInstanceListByModuleID('{015A6EB8-D6E5-4B93-B496-0D3F77AE9FE1}');
         $find_Hook = '/hook/'.$WebHook;
         if (count($ids) > 0) {
