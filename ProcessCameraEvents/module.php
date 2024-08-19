@@ -173,7 +173,7 @@ class ProcessCameraEvents extends IPSModule {
 
             $this->handle_egg_timer($source,$kamera_name,$kameraId);
 
-            if($debug) IPS_LogMessage("HIKMOD".$source,"Leave process Semaphore  ".$kamera_name );
+            if($debug) IPS_LogMessage("HIKMOD".$source,"Leave process Semaphore  ".$semaphore_process_name);
             IPS_SemaphoreLeave($semaphore_process_name);
         }
         else
