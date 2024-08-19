@@ -89,9 +89,12 @@ class ProcessCameraEvents extends IPSModule {
                 if($debug) IPS_LogMessage("HIKMOD","Webhook has delivered File Data");
                 $motionData = $this->parseEventNotificationAlert($webhookData);
                 if (is_array($motionData)) {
-                    if($debug) IPS_LogMessage("HIKMOD","Motion Data is Array");
-                    if($debug) IPS_LogMessage("HIKMOD","Array ".implode(" ",$motionData));
+                    if($debug) IPS_LogMessage("HIKMOD"."File Data","XML Parser hat ein Array zurückgegeben. Weitere Verarbeitung möglich");
+                    if($debug) IPS_LogMessage("HIKMOD"."File Data","Hier ist das Array ".implode(" ",$motionData));
                     $this->handleMotionData($motionData,"File Data");
+                }
+                else{
+                    if($debug) IPS_LogMessage("HIKMOD"."File Data","XML Parser hat kein Array zurückgeliefert, daher keine weitere Verarbeitung möglich ".implode(" ",$motionData));
                 }
             } elseif (is_array($_POST)) {
                 if($debug) IPS_LogMessage("HIKMOD"."Post Data","Webhook has delivered Post Data");
