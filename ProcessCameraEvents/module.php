@@ -317,23 +317,23 @@ class ProcessCameraEvents extends IPSModule {
         IPS_LogMessage("HIKMOD","Destroy existing HIKVISION Webhook Called");
         $debug = $this->ReadPropertyBoolean('debug');
         $WebHook = $this->ReadPropertyString('WebhookName');
-        IPS_LogMessage("HIKMOD","Destroy existing HIKVISION Webhook Called");
+        IPS_LogMessage("HIKMOD","Destroy existing HIKVISION Webhook : ".$WebHook);
         $ids = IPS_GetInstanceListByModuleID('{015A6EB8-D6E5-4B93-B496-0D3F77AE9FE1}');
         $find_Hook = '/hook/'.$WebHook;
         if (count($ids) > 0) {
-            if($debug) IPS_LogMessage("HIKMOD","Webhooks vorhanden");
+            IPS_LogMessage("HIKMOD","Webhooks vorhanden");
             $hooks = json_decode(IPS_GetProperty($ids[0], 'Hooks'), true);
             $correct_hook_found = false;
             foreach ($hooks as $index => $hook) {
                 if  ($hook['Hook'] == $find_Hook) {
                 $correct_hook_found = true;
                 $hooks[$index]['TargetID'] = $this->InstanceID;
-                if($debug) IPS_LogMessage("HIKMOD","Webhook bereits mit der Instanz verbunden und hat den korrekten Namen");
+                IPS_LogMessage("HIKMOD","Webhook bereits mit der Instanz verbunden und hat den korrekten Namen");
                 break;
                 }              
             }
             if ( $correct_hook_found  ) {
-                if($debug) IPS_LogMessage("HIKMOD","Webhook wird jetzt gelöscht");
+                IPS_LogMessage("HIKMOD","Webhook wird jetzt gelöscht");
     
                 // Remove the specific webhook from the hooks array
                 unset($hooks[$index]);
@@ -351,7 +351,7 @@ class ProcessCameraEvents extends IPSModule {
             }
         }
         else{
-            if($debug) IPS_LogMessage("HIKMOD","Keine Webhooks vorhanden");
+            IPS_LogMessage("HIKMOD","Keine Webhooks vorhanden");
         }
         // Call the parent destroy to ensure the instance is properly destroyed
 
