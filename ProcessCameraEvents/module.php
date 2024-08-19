@@ -102,28 +102,32 @@ class ProcessCameraEvents extends IPSModule {
             } elseif (is_array($_POST)) {
                 if($debug) IPS_LogMessage("HIKMOD"."Post Data".$counter ,"Webhook has delivered Post Data");
                 if($debug) IPS_LogMessage("HIKMOD"."Post Data".$counter ,"Array ".implode(" ",$_POST));
-                
-                foreach ($_POST as $value => $content) {
-                        if($debug) IPS_LogMessage("HIKMOD"."Post Data".$counter ,"Value : ".$value);
-                        if($debug) IPS_LogMessage("HIKMOD"."Post Data".$counter ,"Content : ".$content);
-                        $motionData = $this->parseEventNotificationAlert($content);
-                        $this->handleMotionData($motionData, "Post Data". $counter);
-                        
-                        if(array_key_exists('channelName',$motionData)){ 
-                            if($motionData['channelName'] != "")
-                            { 
-                                $this->handleMotionData($motionData, "Post Data". $counter);
+                if(implode(" ",$_POST) == "")
+                {
+                    if($debug) IPS_LogMessage("HIKMOD"."Post Data".$counter ,"Array Empty");
+                }
+                else{
+                    foreach ($_POST as $value => $content) {
+                            if($debug) IPS_LogMessage("HIKMOD"."Post Data".$counter ,"Value : ".$value);
+                            if($debug) IPS_LogMessage("HIKMOD"."Post Data".$counter ,"Content : ".$content);
+                            $motionData = $this->parseEventNotificationAlert($content);
+                            $this->handleMotionData($motionData, "Post Data". $counter);
+                            
+                            if(array_key_exists('channelName',$motionData)){ 
+                                if($motionData['channelName'] != "")
+                                { 
+                                    $this->handleMotionData($motionData, "Post Data". $counter);
+                                }
+                                else{
+                                    if($debug) IPS_LogMessage("HIKMOD"."Post Data".$counter ,"Array Key Channel Name is empty");
+                                }
                             }
                             else{
-                                if($debug) IPS_LogMessage("HIKMOD"."Post Data".$counter ,"Array Key Channel Name is empty");
+                                if($debug) IPS_LogMessage("HIKMOD"."Post Data".$counter ,"No Array Key Channel Name");
                             }
+                            
                         }
-                        else{
-                            if($debug) IPS_LogMessage("HIKMOD"."Post Data".$counter ,"No Array Key Channel Name");
-                        }
-                        
-                    }
-                    
+                }
             }
             else{
                 if($debug) IPS_LogMessage("HIKMOD".$counter ,"Error Not expected Webhook Data");
