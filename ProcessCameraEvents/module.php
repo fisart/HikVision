@@ -147,7 +147,7 @@ class ProcessCameraEvents extends IPSModule {
         $kamera_name = $motionData['channelName'];
         if($debug) IPS_LogMessage("HIKMOD".$source,"Checkpoint 1");
 
-        if (IPS_SemaphoreEnter($kamera_name."process2",10)) 
+        if (IPS_SemaphoreEnter($kamera_name."process3",10)) 
         {
             if($debug) IPS_LogMessage("HIKMOD".$source,"Semaphore process wurde betreten  ".$kamera_name);
 
@@ -174,7 +174,7 @@ class ProcessCameraEvents extends IPSModule {
             $this->handle_egg_timer($source,$kamera_name,$kameraId);
 
             if($debug) IPS_LogMessage("HIKMOD".$source,"Leave process Semaphore  ".$kamera_name );
-            IPS_SemaphoreLeave($kamera_name."process2");
+            IPS_SemaphoreLeave($kamera_name."process3");
         }
         else
         {
