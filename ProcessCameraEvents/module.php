@@ -311,6 +311,7 @@ class ProcessCameraEvents extends IPSModule {
     
 
     public function Destroy() {
+        parent::Destroy();
         // Add your custom code here
         $debug = $this->ReadPropertyBoolean('debug');
         $WebHook = $this->ReadPropertyString('WebhookName');
@@ -359,7 +360,7 @@ class ProcessCameraEvents extends IPSModule {
             if($debug) IPS_LogMessage("HIKMOD","Keine Webhooks vorhanden");
         }
         // Call the parent destroy to ensure the instance is properly destroyed
-        parent::Destroy();
+
     }
 
 
