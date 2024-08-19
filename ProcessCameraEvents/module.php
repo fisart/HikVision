@@ -141,7 +141,7 @@ class ProcessCameraEvents extends IPSModule {
         $username = $this->ReadPropertyString('UserName');
         $password= $this->ReadPropertyString('Password');
         $kamera_name = $motionData['channelName'];
-
+        if($debug) IPS_LogMessage("HIKMOD".$source,"Checkpoint 1");
 
         if (IPS_SemaphoreEnter($kamera_name."process1",10)) 
         {
