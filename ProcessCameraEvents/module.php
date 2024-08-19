@@ -237,8 +237,8 @@ class ProcessCameraEvents extends IPSModule {
     private function handle_egg_timer($source,$kamera_name,$kameraId){ 
         $motion_active = $this->ReadPropertyInteger('MotionActive');
         $debug = $this->ReadPropertyBoolean('debug');
-        $active = Translate('Active');
-        $time_in_seconds = Translate('Time in Seconds');
+        $active = $this->Translate('Active');
+        $time_in_seconds = $this->Translate('Time in Seconds');
         if($debug) IPS_LogMessage("HIKMOD".$source,"Localiced Names : ".$active ."   ".$time_in_seconds );
 
         if (IPS_SemaphoreEnter($kamera_name."EggTimer",10)) 
