@@ -68,14 +68,6 @@
       "maximum": 1000,
       "default": 30
     },
-    {
-      "type": "NumberSpinner",
-      "name": "counter",
-      "caption": "message counter",
-      "minimum": 0,
-      "maximum": 1000,
-      "default": 0
-    },
     { "type": "CheckBox", "name": "debug", "caption": "Debug Messages" }
   ],
   "actions": [],
