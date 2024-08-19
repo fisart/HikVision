@@ -323,28 +323,16 @@ class ProcessCameraEvents extends IPSModule {
         if (count($ids) > 0) {
             if($debug) IPS_LogMessage("HIKMOD","Webhooks vorhanden");
             $hooks = json_decode(IPS_GetProperty($ids[0], 'Hooks'), true);
-            $hook_connected_to_script = false;
-            $correct_hook_installed = false;
-            $correct_hook_with_wrong_name_installed = false;
+            $correct_hook_found = false;
             foreach ($hooks as $index => $hook) {
-                if ($hook['TargetID'] == $this->InstanceID) {
-                    if($debug) IPS_LogMessage("HIKMOD","Webhook bereits mit Instanz verbunden");
-                    $hook_connected_to_script = true;
-                    if  ($hook['Hook'] == $find_Hook) {
-                        $correct_hook_installed = true;
-                        $hooks[$index]['TargetID'] = $this->InstanceID;
-                        if($debug) IPS_LogMessage("HIKMOD","Webhook bereits mit der Instanz verbunden und hat den korrekten Namen");
-                        break;
-                    }
-                    else{
-                        $correct_hook_with_wrong_name_installed = true; 
-                        $hooks[$index]['TargetID'] = $this->InstanceID;
-                        if($debug) IPS_LogMessage("HIKMOD","Webhook mit der Instanz verbunden aber mit falschem Namen. Er wird daher nicht gelöscht");
-                        break;                 
-                    }
-                }
+                if  ($hook['Hook'] == $find_Hook) {
+                $correct_hook_found = true;
+                $hooks[$index]['TargetID'] = $this->InstanceID;
+                if($debug) IPS_LogMessage("HIKMOD","Webhook bereits mit der Instanz verbunden und hat den korrekten Namen");
+                break;
+                }              
             }
-            if ($correct_hook_installed ) {
+            if ( $correct_hook_found  ) {
                 if($debug) IPS_LogMessage("HIKMOD","Webhook wird jetzt gelöscht");
     
                 // Remove the specific webhook from the hooks array
@@ -357,6 +345,10 @@ class ProcessCameraEvents extends IPSModule {
                 IPS_SetProperty($ids[0], 'Hooks', json_encode($hooks));
                 IPS_ApplyChanges($ids[0]);
             }  
+            else
+            {
+                IPS_LogMessage("HIKMOD","Webhook not found ");
+            }
         }
         else{
             if($debug) IPS_LogMessage("HIKMOD","Keine Webhooks vorhanden");
