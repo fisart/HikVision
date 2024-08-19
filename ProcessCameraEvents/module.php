@@ -77,7 +77,7 @@ class ProcessCameraEvents extends IPSModule {
     public function  ProcessHookData() {
             $counter = $this->ReadPropertyInteger('counter');
             $counter = $counter + 1;
-            $this->WriteAttributeInteger('counter',$counter);
+            $this->WriteAttributeInteger('counter',"5");
             $debug = $this->ReadPropertyBoolean('debug');
             if($debug) IPS_LogMessage("HIKMOD","=======================Start of Script Webhook Processing============================".$counter ); 
             /*       
