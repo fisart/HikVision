@@ -143,7 +143,7 @@ class ProcessCameraEvents extends IPSModule {
         $kamera_name = $motionData['channelName'];
 
 
-        if (IPS_SemaphoreEnter($kamera_name."process",5000)) 
+        if (IPS_SemaphoreEnter($kamera_name."process",10)) 
         {
             if($debug) IPS_LogMessage("HIKMOD".$source,"Semaphore process wurde betreten  ".$kamera_name);
 
@@ -193,7 +193,7 @@ class ProcessCameraEvents extends IPSModule {
     private function handle_egg_timer_alt($source,$kamera_name,$kameraId){ 
         $motion_active = $this->ReadPropertyInteger('MotionActive');
         $debug = $this->ReadPropertyBoolean('debug');
-        if (IPS_SemaphoreEnter($kamera_name,1000)) 
+        if (IPS_SemaphoreEnter($kamera_name,10)) 
         {
             if($debug) IPS_LogMessage("HIKMOD".$source,"Semaphore gesetzt um zu verhindern das mehrere Egg Timer installiert werden   ".$kamera_name );
             $eggTimerId = @IPS_GetObjectIDByName("Egg Timer", $kameraId);
