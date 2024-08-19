@@ -145,11 +145,12 @@ class ProcessCameraEvents extends IPSModule {
         $username = $this->ReadPropertyString('UserName');
         $password= $this->ReadPropertyString('Password');
         $kamera_name = $motionData['channelName'];
+        $semaphore_process_name = $kamera_name."10";
         if($debug) IPS_LogMessage("HIKMOD".$source,"Checkpoint 1");
 
-        if (IPS_SemaphoreEnter($kamera_name."process3",10)) 
+        if (IPS_SemaphoreEnter($semaphore_process_name ,1000)) 
         {
-            if($debug) IPS_LogMessage("HIKMOD".$source,"Semaphore process wurde betreten  ".$kamera_name);
+            if($debug) IPS_LogMessage("HIKMOD".$source,"Semaphore process wurde betreten  ".$semaphore_process_name);
 
             $kameraId = $this->manageVariable($parent, $kamera_name , 0, 'Motion', true, 0, ""); 
             $event_descriptionvar_id = $this->manageVariable($kameraId, $motionData['eventDescription'], 3, '~TextBox', true, 0, "");
@@ -174,11 +175,11 @@ class ProcessCameraEvents extends IPSModule {
             $this->handle_egg_timer($source,$kamera_name,$kameraId);
 
             if($debug) IPS_LogMessage("HIKMOD".$source,"Leave process Semaphore  ".$kamera_name );
-            IPS_SemaphoreLeave($kamera_name."process3");
+            IPS_SemaphoreLeave($semaphore_process_name);
         }
         else
         {
-            if($debug) IPS_LogMessage("HIKMOD".$source," Process Semaphore Active. No execution for this Data ".$kamera_name );
+            if($debug) IPS_LogMessage("HIKMOD".$source," Process Semaphore Active. No execution for this Data ".$semaphore_process_name);
         }  
         if($debug) IPS_LogMessage("HIKMOD".$source,$source."--------------------------------End of Script Motion Data -------------------".$kamera_name );
     }
@@ -199,7 +200,7 @@ class ProcessCameraEvents extends IPSModule {
         $debug = $this->ReadPropertyBoolean('debug');
 
 
-        if (IPS_SemaphoreEnter($kamera_name."EggTimer",10)) 
+        if (IPS_SemaphoreEnter($kamera_name."EggTimer",1000)) 
         {
             if($debug) IPS_LogMessage("HIKMOD".$source,"Semaphore gesetzt um zu verhindern das mehrere Egg Timer installiert werden   ".$kamera_name );
             $eggTimerId = @IPS_GetObjectIDByName("Egg Timer", $kameraId);
@@ -239,11 +240,12 @@ class ProcessCameraEvents extends IPSModule {
         $debug = $this->ReadPropertyBoolean('debug');
         $active = $this->Translate('Active');
         $time_in_seconds = $this->Translate('Time in Seconds');
+        $semaphore_egg_timer_name = $kamera_name."EggTimer1";
         if($debug) IPS_LogMessage("HIKMOD".$source,"Localiced Names : ".$active ."   ".$time_in_seconds );
 
-        if (IPS_SemaphoreEnter($kamera_name."EggTimer",10)) 
+        if (IPS_SemaphoreEnter($semaphore_egg_timer_name,1000)) 
         {
-            if($debug) IPS_LogMessage("HIKMOD".$source,"Habe Semaphore gesetzt um zu verhindern das mehrere Egg Timer installiert werden   ".$kamera_name );
+            if($debug) IPS_LogMessage("HIKMOD".$source,"Habe Semaphore gesetzt um zu verhindern das mehrere Egg Timer installiert werden   ".$semaphore_egg_timer_name );
             $eggTimerId = @IPS_GetObjectIDByName("Egg Timer", $kameraId);
             if ($eggTimerId) {
                 if($debug) IPS_LogMessage("HIKMOD".$source,"Check 1 : Der Egg Timer existiert bereits und wird auf Aktiv gesetzt  ".$kameraId);
@@ -267,11 +269,11 @@ class ProcessCameraEvents extends IPSModule {
                 IPS_SetEventTriggerValue($eid, false);
                 if($debug) IPS_LogMessage("HIKMOD".$source,"Event wurde installiert Event ID ".$eid." Egg Timer ID ".$insId);
             }
-            IPS_SemaphoreLeave($kamera_name."EggTimer" );
+            IPS_SemaphoreLeave($semaphore_egg_timer_name );
         }
         else
         {
-            if($debug) IPS_LogMessage("HIKMOD".$source,"Es wird bereits ein Egg Timer installiert Semaphore war gesetzt ".$kamera_name );
+            if($debug) IPS_LogMessage("HIKMOD".$source,"Es wird bereits ein Egg Timer installiert Semaphore war gesetzt ".$semaphore_egg_timer_name );
         }  
     }
 
