@@ -1,8 +1,15 @@
 {
     "translations": {
         "de": {
-            "Translation 1": "Übersetzung 1",
-            "Translation 2": "Übersetzung 2"
+            "Eggtimer": "Eieruhr",
+            "Update Interval": "Aktualisierungsintervall",
+            "Remaining": "Verbleibend",
+            "Time in Seconds": "Zeit in Sekunden",
+            "Off": "Aus",
+            "Active": "Aktiv",
+            "Seconds": "Sekunden",
+            "https://www.symcon.de/en/service/documentation/module-reference/egg-timer/": "https://www.symcon.de/de/service/dokumentation/modulreferenz/eieruhr/",
+            "Egg Timer": "Eieruhr"
         }
     }
 }
