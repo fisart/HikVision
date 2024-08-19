@@ -146,9 +146,8 @@ class ProcessCameraEvents extends IPSModule {
         $password= $this->ReadPropertyString('Password');
         $kamera_name = $motionData['channelName'];
         $semaphore_process_name = $kamera_name."10";
-        if($debug) IPS_LogMessage("HIKMOD".$source,"Checkpoint 1");
 
-        if (IPS_SemaphoreEnter($semaphore_process_name ,1000)) 
+        if (IPS_SemaphoreEnter($semaphore_process_name ,5000)) 
         {
             if($debug) IPS_LogMessage("HIKMOD".$source,"Semaphore process wurde betreten  ".$semaphore_process_name);
 
