@@ -130,7 +130,7 @@ class ProcessCameraEvents extends IPSModule {
 
     private function handleMotionData($motionData,$source) {
         $debug = $this->ReadPropertyBoolean('debug');
-        if($debug) IPS_LogMessage("HIKMOD".$source,$source."--------------------------------Start of Script Motion Data -------------------");
+        if($debug) IPS_LogMessage("HIKMOD".$source,$source."--------------------------------Start of Script Motion Data -------------------".$motionData['channelName']);
         $notSetYet = 'NotSet';
         $parent = $this->InstanceID;
         $channelId = $this->ReadPropertyString('ChannelId');
