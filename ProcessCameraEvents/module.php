@@ -13,7 +13,7 @@ class ProcessCameraEvents extends IPSModule {
         $this->RegisterPropertyString('Password', 'NotSet');
         $this->RegisterPropertyInteger('MotionActive', '30');
         $this->RegisterPropertyBoolean('debug', false);
-        $this->RegisterAttributeInteger('counter', '40');
+        $this->RegisterAttributeInteger('counter', '0');
         $this->RegisterAttributeString('EggTimerModuleId', '{17843F0A-BFC8-A4BA-E219-A2D10FC8E5BE}');
         
         // Ensure the webhook is registered
@@ -77,16 +77,16 @@ class ProcessCameraEvents extends IPSModule {
     public function  ProcessHookData() {
             $counter = $this->ReadAttributeInteger('counter');
             $counter = $counter + 1;
-            $this->WriteAttributeInteger('counter',"50");
+            $this->WriteAttributeInteger('counter',$counter);
             $debug = $this->ReadPropertyBoolean('debug');
             if($debug) IPS_LogMessage("HIKMOD","=======================Start of Script Webhook Processing============================".$counter ); 
-            /*       
-            $eggTimerModuleId = $this->ReadPropertyString('EggTimerModuleId');
+                   
+            $eggTimerModuleId = $this->ReadAttributeString('EggTimerModuleId');
             if (!IPS_GetModule($eggTimerModuleId)) {
                 if($debug) IPS_LogMessage("HIKMOD","Bitte erst das Egg Timer Modul aus dem Modul Store installieren");
                 return;
             }
-            */
+            
             $webhookData = file_get_contents("php://input", true);
             if ($webhookData !== "") {
                 if($debug) IPS_LogMessage("HIKMOD","Webhook has delivered File Data");
@@ -205,7 +205,7 @@ class ProcessCameraEvents extends IPSModule {
                 RequestAction(IPS_GetObjectIDByName("Aktiv", $eggTimerId), true);
             } else {
                 if($debug) IPS_LogMessage("HIKMOD".$source,"Egg Timer existiert NICHT und wird installiert  ".$kameraId);
-                $insId = IPS_CreateInstance($this->ReadPropertyString('EggTimerModuleId'));
+                $insId = IPS_CreateInstance($this->ReadAttributeString('EggTimerModuleId'));
                 IPS_SetName($insId, "Egg Timer");
                 IPS_SetParent($insId, $kameraId);
                 IPS_ApplyChanges($insId);
@@ -244,7 +244,7 @@ class ProcessCameraEvents extends IPSModule {
                 RequestAction(IPS_GetObjectIDByName(Translate('Active'), $eggTimerId), true);
             } else {
                 if($debug) IPS_LogMessage("HIKMOD".$source,"Egg Timer existiert NICHT und wird installiert  ".$kameraId);
-                $insId = IPS_CreateInstance($this->ReadPropertyString('EggTimerModuleId'));
+                $insId = IPS_CreateInstance($this->ReadAttributeString('EggTimerModuleId'));
                 IPS_SetName($insId, "Egg Timer");
                 IPS_SetParent($insId, $kameraId);
                 IPS_ApplyChanges($insId);
