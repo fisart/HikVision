@@ -1,5 +1,5 @@
 <?php
-// Version 1.1
+// Version 1.2
 class ProcessCameraEvents extends IPSModule {
     
     public function Create() {
