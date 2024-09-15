@@ -104,7 +104,7 @@ class ProcessCameraEvents extends IPSModule {
                 if($debug) $this->LogMessage("HIKMOD"."Post Data".$counter ,"Array ".implode(" ",$_POST),10201);
                 if(implode(" ",$_POST) == "")
                 {
-                    if($debug) $this->LogMessage("HIKMOD"."Post Data".$counter ,"Array Empty"),10201;
+                    if($debug) $this->LogMessage("HIKMOD"."Post Data".$counter ,"Array Empty",10201);
                 }
                 else{
                     foreach ($_POST as $value => $content) {
