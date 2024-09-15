@@ -210,7 +210,7 @@ class ProcessCameraEvents extends IPSModule {
             if($debug) $this->LogMessage("HIKMOD".$source,"Habe Semaphore gesetzt um zu verhindern das mehrere Egg Timer installiert werden   ".$semaphore_egg_timer_name ,10201);
             $eggTimerId = @IPS_GetObjectIDByName("Egg Timer", $kameraId);
             if ($eggTimerId) {
-                if($debug) $this->LogMessage("HIKMOD".$source,"Der Egg Timer existiert bereits und wird aktiviert  ".$kameraId),10201;
+                if($debug) $this->LogMessage("HIKMOD".$source,"Der Egg Timer existiert bereits und wird aktiviert  ".$kameraId,10201);
                 $activ_id = @IPS_GetObjectIDByName($active,  $eggTimerId );
                 SetValueInteger(IPS_GetObjectIDByName($time_in_seconds, $eggTimerId), $motion_active);
                 RequestAction(IPS_GetObjectIDByName($active, $eggTimerId), true);
